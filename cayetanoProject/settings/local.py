@@ -7,8 +7,13 @@ ALLOWED_HOSTS = []
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'mssql',
+        'NAME': 'CAYETANO_DB',
+        'USER': secret["DB_USER"],
+        'PASSWORD': secret['DB_PASSWORD'],
+        'HOST': 'FX-NB-001\MSSQLSERVER02',
+        'PORT': '',
+        'OPTIONS': {'driver': 'ODBC Driver 17 for SQL Server', 'extra_params': 'TrustServerCertificate=yes;'}
     }
 }
 
