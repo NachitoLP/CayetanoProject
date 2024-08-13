@@ -53,31 +53,19 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>DNI</th>
+                <th></th>
                 <th>Nombre</th>
                 <th>Apellido</th>
-                <th>Fecha de Nacimiento</th>
-                <th>Edad</th>
-                <th>Dirección</th>
-                <th>Teléfono</th>
-                <th>Centro de Abuelos</th>
-                <th>Observaciones</th>
-                <th>Localidad</th>
+                <th>DNI</th>
             </tr>
         </thead>
         <tbody>
             {% for person in people %}
                 <tr>
-                    <td>{{ person.person_dni }}</td>
+                    <td style="text-align: center;"><span class="material-symbols-outlined navbar-toggler-icon" style="color: rgb(255, 255, 255); background-color: rgb(1, 11, 37); text-align: center; align-items: center; border-radius: 50%; padding: 4px 0px;">person</span></td>
                     <td>{{ person.person_name }}</td>
                     <td>{{ person.person_surname }}</td>
-                    <td>{{ person.person_birthdate }}</td>
-                    <td>{{ person.age }}</td>
-                    <td>{{ person.person_address }}</td>
-                    <td>{{ person.person_phone }}</td>
-                    <td>{{ person.person_bg_center|yesno:"Sí,No" }}</td>
-                    <td>{{ person.person_observations }}</td>
-                    <td>{{ person.locality_id }}</td>
+                    <td>{{ person.person_dni }}</td>
                 </tr>
             {% empty %}
                 <tr>

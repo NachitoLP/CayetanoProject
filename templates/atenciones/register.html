@@ -92,31 +92,6 @@
                 <input type="checkbox" name="service_status" id="service_status">
             </div>
 
-            <div class="form-group">
-                <label for="person_phone">Teléfono:</label>
-                <input type="number" name="person_phone" id="person_phone" class="form-control" required>
-            </div>
-
-            <div class="form-group">
-                <label for="person_bg_center">¿Pertenece al Centro de Abuelos?</label>
-                <input type="checkbox" name="person_bg_center" id="person_bg_center">
-            </div>
-
-            <div class="form-group">
-                <label for="person_observations">Observaciones:</label>
-                <textarea name="person_observations" id="person_observations" class="form-control"></textarea>
-            </div>
-
-            <div class="form-group">
-                <label for="locality_id">Localidad:</label>
-                <select name="locality_id" id="locality_id" class="form-control" required>
-                    <option value="">Seleccionar localidad</option>
-                    {% for locality in localities %}
-                        <option value="{{ locality.locality_id }}">{{ locality.locality_name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-
             <button type="submit" class="btn btn-primary">Registrar</button>
         </form>
     </div>

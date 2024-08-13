@@ -57,6 +57,7 @@ def registerPerson(request):
                 person_name = person_name,
                 person_surname = person_surname,
                 person_birthdate = person_birthdate,
+                person_address = person_address,
                 person_phone = person_phone,
                 person_bg_center = person_bg_center,
                 person_observations = person_observations,

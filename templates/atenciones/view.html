@@ -1,22 +1,22 @@
 {%load static%}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-    <script src="https://kit.fontawesome.com/5cd1008cde.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <title>Página web</title>
-</head>
-<body class="body_home">
-    <header class="body_header">
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+        <script src="https://kit.fontawesome.com/5cd1008cde.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        <title>Página web</title>
+    </head>
+    <body class="body_home">
+        <header class="body_header">
+            <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid">
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="material-symbols-outlined navbar-toggler-icon">menu</span>
@@ -41,43 +41,33 @@
             </div>
         </nav>
     </header>
-
+    
     <h1>Atenciones Registradas</h1>
-
+    
     {% if error %}
-        <div class="alert alert-danger">
-            {{ error }}
-        </div>
+    <div class="alert alert-danger">
+        {{ error }}
+    </div>
     {% endif %}
-
+    
     <table class="table table-striped">
         <thead>
             <tr>
                 <th>ID Atención</th>
-                <th>Motivo</th>
-                <th>Fecha de Registro</th>
-                <th>Fecha de Modificación</th>
-                <th>Estado</th>
-                <th>Descripción</th>
-                <th>Organismo</th>
                 <th>Persona Atendida</th>
+                <th>Fecha de Registro</th>
             </tr>
         </thead>
         <tbody>
             {% for attention in attentions %}
-                <tr>
-                    <td>{{ attention.service_id }}</td>
-                    <td>{{ attention.service_reason_id }}</td>
-                    <td>{{ attention.service_date }}</td>
-                    <td>{{ attention.service_modified_date }}</td>
-                    <td>{{ attention.service_status|yesno:"Sí,No" }}</td>
-                    <td>{{ attention.service_description }}</td>
-                    <td>{{ attention.organism_id }}</td>
-                    <td>{{ attention.person_id }}</td>
-                </tr>
+            <tr>
+                <td>{{ attention.service_id }}</td>
+                <td>{{ attention.person_id.person_surname }} {{ attention.person_id.person_name }}</td>
+                <td>{{ attention.service_date|date:"d/m/Y H:i" }}</td>
+            </tr>
             {% empty %}
-                <tr>
-                    <td colspan="8">No hay atenciones registradas.</td>
+            <tr>
+                <td colspan="8">No hay atenciones registradas.</td>
                 </tr>
             {% endfor %}
         </tbody>
