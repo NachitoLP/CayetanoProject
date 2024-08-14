@@ -42,7 +42,7 @@
         </nav>
     </header>
     
-    <h1>Atenciones Registradas</h1>
+    <h2 class="atention_register_title">Atenciones registradas</h2>
     
     {% if error %}
     <div class="alert alert-danger">
@@ -53,9 +53,9 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>ID Atención</th>
+                <th>ID</th>
                 <th>Persona Atendida</th>
-                <th>Fecha de Registro</th>
+                <th>Fecha de atención</th>
             </tr>
         </thead>
         <tbody>
@@ -67,13 +67,13 @@
             </tr>
             {% empty %}
             <tr>
-                <td colspan="8">No hay atenciones registradas.</td>
-                </tr>
+                <td colspan="3">No hay atenciones registradas.</td>
+            </tr>
             {% endfor %}
         </tbody>
     </table>
 
-    <a href="/register/atention" class="btn btn-primary">Registrar Nueva Atención</a>
+    <a href="/register/atention" class="btn btn-primary btn_register_new_atention">Registrar Atención</a>
 
     <footer class="footer_log_in">
         <p>Sistema elaborado por Tech Pro - 2024</p>

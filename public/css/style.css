@@ -98,7 +98,6 @@
     text-align: center;
     background-color: #f1f1f1;
     padding: 10px;
-    position: absolute;
     bottom: 0;
     margin-bottom: 0;
 }
@@ -224,6 +223,7 @@
     .home_search_form_div button{
         margin: 0px 10px;
         min-width: 90px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.868);
     }
 
     .home_search_form_div .btn-secondary{
@@ -236,3 +236,50 @@
         margin-top: 40px;
         width: 100%;
     }
+
+
+/* VIEW ATENCIONES Y PERSONAS */
+
+.atention_register_title {
+    text-align: center;
+    margin: 20px auto 0px;
+}
+
+.table {
+    width: 90%; /* Ajusta el ancho de la tabla según tus necesidades */
+    margin: 20px auto; /* Centra la tabla y añade un margen superior e inferior */
+    border-collapse: collapse; /* Elimina los espacios entre celdas */
+}
+
+.table th, .table td {
+    border: 1px solid #ddd; /* Bordes de las celdas */
+    padding: 8px; /* Espaciado dentro de las celdas */
+    text-align: center; /* Centra el texto dentro de las celdas */
+}
+
+.table th {
+    background-color: #f4f4f4; /* Fondo gris claro para el encabezado */
+    color: #333; /* Color del texto del encabezado */
+    font-weight: bold; /* Negrita para el encabezado */
+}
+
+.table tr:nth-child(even) {
+    background-color: #f9f9f9; /* Fondo gris claro para las filas pares */
+}
+
+.table tr:hover {
+    background-color: #f1f1f1; /* Color de fondo al pasar el ratón sobre la fila */
+}
+
+.table td[colspan] {
+    text-align: center; /* Centra el texto en las celdas que usan colspan */
+    font-style: italic; /* Estilo en cursiva para el texto */
+}
+
+.btn_register_new_atention{
+    width: 180px;
+    display: block;
+    margin: auto;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.868);
+}

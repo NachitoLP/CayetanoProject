@@ -42,7 +42,7 @@
         </nav>
     </header>
 
-    <h1>Personas Registradas</h1>
+    <h2 class="atention_register_title">Personas Registradas</h2>
 
     {% if error %}
         <div class="alert alert-danger">
@@ -53,7 +53,6 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th></th>
                 <th>Nombre</th>
                 <th>Apellido</th>
                 <th>DNI</th>
@@ -62,7 +61,6 @@
         <tbody>
             {% for person in people %}
                 <tr>
-                    <td style="text-align: center;"><span class="material-symbols-outlined navbar-toggler-icon" style="color: rgb(255, 255, 255); background-color: rgb(1, 11, 37); text-align: center; align-items: center; border-radius: 50%; padding: 4px 0px;">person</span></td>
                     <td>{{ person.person_name }}</td>
                     <td>{{ person.person_surname }}</td>
                     <td>{{ person.person_dni }}</td>
@@ -75,7 +73,7 @@
         </tbody>
     </table>
 
-    <a href="/register/person" class="btn btn-primary">Registrar Nueva Persona</a>
+    <a href="/register/person" class="btn btn-primary btn_register_new_atention">Registrar Persona</a>
 
     <footer class="footer_log_in">
         <p>Sistema elaborado por Tech Pro - 2024</p>
