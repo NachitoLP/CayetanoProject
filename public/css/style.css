@@ -7,6 +7,11 @@
     padding: 0;
 }
 
+.asterisk_required{
+    color: red; 
+    display: inline;
+}
+
 /* LOG IN */
 
 .body_login {
@@ -109,8 +114,6 @@
 
 /* HOME */
 
-
-
     /* NAVBAR */
 
     .navbar {
@@ -202,6 +205,7 @@
         background-color: rgb(30, 83, 243);
     }
 
+
     /* ESTADÍSTICAS */
 
     .home_stadistics_div{
@@ -230,6 +234,7 @@
         background-color: green;
     }
 
+    
     /* RESULTADOS */
 
     .home_results_div{
@@ -280,6 +285,30 @@
     width: 180px;
     display: block;
     margin: auto;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.868);
+}
+
+
+/* FORMULARIOS */
+
+.form-group{
+    margin:20px auto;
+    width: 90%;
+}
+
+.form-group label {
+    font-weight: 600;
+}
+
+.form-control{
+    margin: auto;
+}
+
+.btn_register__FORM {
+    display: block;
+    width: 150px;
+    margin: 20px auto 40px;
     text-align: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.868);
 }

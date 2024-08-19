@@ -43,7 +43,7 @@
     </header>
 
     <div>
-        <h1>Registrar Atención</h1>
+        <h2 class="atention_register_title">Registrar atención</h2>
 
         {% if error %}
             <div class="alert alert-danger">
@@ -55,8 +55,9 @@
             {% csrf_token %}
 
             <div class="form-group">
-                <label for="service_reason_id">Motivo</label>
-                <select name="service_reason_id" id="service_reason_id" required>
+                <label for="service_reason_id">Motivo <p class="asterisk_required">*</p></label>
+                <select name="service_reason_id" id="service_reason_id" class="form-control" required>
+                    <option value=""></option>
                     {% for reason in reasons %}
                         <option value="{{ reason.service_reason_id }}">{{ reason.service_reason }}</option>
                     {% endfor %}
@@ -64,8 +65,9 @@
             </div>
 
             <div class="form-group">
-                <label for="person_id">Persona Atendida</label>
-                <select name="person_id" id="person_id" required>
+                <label for="person_id">Persona Atendida <p class="asterisk_required">*</p></label>
+                <select name="person_id" id="person_id" class="form-control" required>
+                    <option value=""></option>
                     {% for person in people %}
                         <option value="{{ person.person_dni }}">{{ person.person_surname }} {{ person.person_name }} - {{ person.person_dni }}</option>
                     {% endfor %}
@@ -74,7 +76,7 @@
 
             <div class="form-group">
                 <label for="organism_id">Organismo:</label>
-                <select name="organism_id" id="organism_id">
+                <select name="organism_id" id="organism_id" class="form-control">
                     <option value="">N/A</option>
                     {% for organism in organisms %}
                         <option value="{{ organism.organism_id }}">{{ organism.organism_name }}</option>
@@ -83,20 +85,20 @@
             </div>
 
             <div class="form-group">
-                <label for="service_description">Descripción</label>
-                <textarea name="service_description" id="service_description" required></textarea>
+                <label for="service_description">Descripción <p class="asterisk_required">*</p></label>
+                <textarea style="resize: none;" name="service_description" id="service_description" class="form-control" required></textarea>
             </div>
 
-            <div class="form-group">
-                <label for="service_status">¿Se desarrolló el seguimiento correspondiente?</label>
-                <input type="checkbox" name="service_status" id="service_status">
+            <div class="form-group form-check">
+                <label for="service_status" class="form-check-label">¿Se desarrolló el seguimiento correspondiente?</label>
+                <input type="checkbox" name="service_status" id="service_status" class="form-check-input">
             </div>
 
-            <button type="submit" class="btn btn-primary">Registrar</button>
+            <button type="submit" class="btn btn-primary btn_register__FORM">Registrar</button>
         </form>
     </div>
 
-    <footer class="footer_log_in">
+    <footer class="footer_log_in" >
         <p>Sistema elaborado por Tech Pro - 2024</p>
         <p><< Todos los derechos reservados >></p>
     </footer>

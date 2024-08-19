@@ -43,7 +43,7 @@
     </header>
 
     <div>
-        <h1>Registrar Persona</h1>
+        <h2 class="atention_register_title">Registrar persona</h2>
 
         {% if error %}
             <div class="alert alert-danger">
@@ -55,47 +55,47 @@
             {% csrf_token %}
 
             <div class="form-group">
-                <label for="person_dni">DNI:</label>
+                <label for="person_dni">DNI: <p class="asterisk_required">*</p></label>
                 <input type="number" name="person_dni" id="person_dni" class="form-control" required>
             </div>
 
             <div class="form-group">
-                <label for="person_name">Nombre:</label>
+                <label for="person_name">Nombre: <p class="asterisk_required">*</p></label>
                 <input type="text" name="person_name" id="person_name" class="form-control" required>
             </div>
 
             <div class="form-group">
-                <label for="person_surname">Apellido:</label>
+                <label for="person_surname">Apellido: <p class="asterisk_required">*</p></label>
                 <input type="text" name="person_surname" id="person_surname" class="form-control" required>
             </div>
 
             <div class="form-group">
-                <label for="person_birthdate">Fecha de Nacimiento:</label>
+                <label for="person_birthdate">Fecha de Nacimiento: <p class="asterisk_required">*</p></label>
                 <input type="date" name="person_birthdate" id="person_birthdate" class="form-control" required>
             </div>
 
             <div class="form-group">
                 <label for="person_address">Dirección:</label>
-                <input type="text" name="person_address" id="person_address" class="form-control" required>
+                <input type="text" name="person_address" id="person_address" class="form-control">
             </div>
 
             <div class="form-group">
                 <label for="person_phone">Teléfono:</label>
-                <input type="number" name="person_phone" id="person_phone" class="form-control" required>
+                <input type="number" name="person_phone" id="person_phone" class="form-control">
             </div>
 
-            <div class="form-group">
-                <label for="person_bg_center">¿Pertenece al Centro de Abuelos?</label>
-                <input type="checkbox" name="person_bg_center" id="person_bg_center">
+            <div class="form-group form-check">
+                <label for="person_bg_center" class="form-check-label">¿Pertenece al Centro de Abuelos?</label>
+                <input type="checkbox" name="person_bg_center" id="person_bg_center" class="form-check-input">
             </div>
 
             <div class="form-group">
                 <label for="person_observations">Observaciones:</label>
-                <textarea name="person_observations" id="person_observations" class="form-control"></textarea>
+                <textarea style="resize: none;" name="person_observations" id="person_observations" class="form-control"></textarea>
             </div>
 
             <div class="form-group">
-                <label for="locality_id">Localidad:</label>
+                <label for="locality_id">Localidad: <p class="asterisk_required">*</p></label>
                 <select name="locality_id" id="locality_id" class="form-control" required>
                     <option value="">Seleccionar localidad</option>
                     {% for locality in localities %}
@@ -104,7 +104,7 @@
                 </select>
             </div>
 
-            <button type="submit" class="btn btn-primary">Registrar</button>
+            <button type="submit" class="btn btn-primary btn_register__FORM">Registrar</button>
         </form>
     </div>
 
