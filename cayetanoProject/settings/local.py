@@ -3,7 +3,7 @@ import os
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 DATABASES = {
     'default': {
@@ -47,3 +47,10 @@ STATICFILES_DIRS = [
 ]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+#COOKIES y SESSION
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True #Se cierra la sesión al cerrar el navegador
+
+SESSION_COOKIE_AGE = 3600 #1 Hora
+SESSION_SAVE_EVERY_REQUEST = True #Se reestablece con cada acción
