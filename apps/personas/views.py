@@ -93,7 +93,7 @@ def viewPersons(request):
             # Si no hay término de búsqueda, muestra todos los registros
             people = Person.objects.all()
 
-        # Paginación
+
         paginator = Paginator(people, 5)  # Mostrar 5 personas por página
         page = request.GET.get('page')  # Obtener el número de página de los parámetros de la solicitud
 

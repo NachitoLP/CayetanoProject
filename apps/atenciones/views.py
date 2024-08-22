@@ -77,22 +77,26 @@ def viewAtentions(request):
     try:
         attentions = Service.objects.all()
         
-        # Filtrar por rango de fechas si se proporcionan
+        # Filtrar por rango de fechas
         if from_date and to_date:
             attentions = attentions.filter(service_date__range=[from_date, to_date])
+        elif from_date:
+            attentions = attentions.filter(service_date__gte=from_date)
+        elif to_date:
+            attentions = attentions.filter(service_date__lte=to_date)
         
-        # Filtrar por persona atendida si se proporciona
+        # Filtrar por persona atendida
         if person_id:
             attentions = attentions.filter(person_id=person_id)
         
-        # Filtrar por ID de la atención si se proporciona
+        # Filtrar por ID de la atención
         if attention_id:
             attentions = attentions.filter(service_id=attention_id)
         
         # Obtener la lista de personas para el desplegable
         people = Person.objects.all()
         
-        # Paginación
+
         paginator = Paginator(attentions, 5)  # Mostrar 5 atenciones por página
         page = request.GET.get('page')  # Obtener el número de página de los parámetros de la solicitud
 
