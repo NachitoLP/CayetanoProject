@@ -51,6 +51,11 @@
         </div>
     {% endif %}
 
+    <form method="get" action="" class="form-group search_view_form">
+        <input type="text" name="query" value="{{ query }}" placeholder="Buscar por DNI o apellido" class="form-control" style="margin-right:10px;">
+        <button type="submit" class="btn btn-primary" style="box-shadow: 0 2px 4px rgba(0, 0, 0, 0.34);">Buscar</button>
+    </form>
+    
     <table class="table table-striped">
         <thead>
             <tr>
@@ -73,6 +78,33 @@
             {% endfor %}
         </tbody>
     </table>
+
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            {% if people.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?{% if query %}query={{ query }}&{% endif %}page={{ people.previous_page_number }}" aria-label="Previous">
+                        <i class="fas fa-chevron-left"></i> <!-- Icono de FontAwesome para flecha hacia la izquierda -->
+                    </a>
+                </li>
+            {% endif %}
+    
+            <!-- Mostrar número de la página actual -->
+            <li class="page-item disabled">
+                <span class="page-link">
+                    Página {{ people.number }} de {{ people.paginator.num_pages }}
+                </span>
+            </li>
+    
+            {% if people.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?{% if query %}query={{ query }}&{% endif %}page={{ people.next_page_number }}" aria-label="Next">
+                        <i class="fas fa-chevron-right"></i> <!-- Icono de FontAwesome para flecha hacia la derecha -->
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
 
     <a href="/register/person" class="btn btn-primary btn_register_new_atention">Registrar Persona</a>
 

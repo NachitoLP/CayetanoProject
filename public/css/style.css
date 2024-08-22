@@ -312,3 +312,17 @@
     text-align: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.868);
 }
+
+.search_view_form{
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+}
+
+.search_view_attentions_form{
+    margin-bottom: 40px;
+}
+.search_attentions_buttons {
+    margin: auto;
+    text-align: center;
+}

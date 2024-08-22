@@ -4,6 +4,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from django.utils.dateparse import parse_date
+from django.db.models import Q
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import Person, Province, Locality
 from ..atenciones.models import Service, Reason
@@ -65,7 +67,7 @@ def registerPerson(request):
             )
             new_person.save()
             
-            return redirect('/')
+            return redirect('/view/persons')
         except Locality.DoesNotExist:
             return render(request, 'personas/register.html', {
                 "error": 'Localidad no válida.',
@@ -81,10 +83,32 @@ def registerPerson(request):
 
 @login_required
 def viewPersons(request):
+    query = request.GET.get('query', '')
     try:
-        people = Person.objects.all()
+        if query:
+            people = Person.objects.filter(
+                Q(person_dni__icontains=query) | Q(person_surname__icontains=query)
+            ) #Se hace un filtrado tanto por DNI como por Apellido, y el __icontains hace una búsqueda insensible a mayúsculas y minúsculas
+        else:
+            # Si no hay término de búsqueda, muestra todos los registros
+            people = Person.objects.all()
+
+        # Paginación
+        paginator = Paginator(people, 5)  # Mostrar 5 personas por página
+        page = request.GET.get('page')  # Obtener el número de página de los parámetros de la solicitud
+
+        try:
+            people = paginator.page(page)
+        except PageNotAnInteger:
+            # Si la página no es un entero, muestra la primera página
+            people = paginator.page(1)
+        except EmptyPage:
+            # Si la página está fuera del rango, muestra la última página de resultados
+            people = paginator.page(paginator.num_pages)
+        
         return render(request, 'personas/view.html', {
-            'people': people
+            'people': people,
+            'query': query
         })
     except Exception as e:
         return render(request, 'personas/view.html', {

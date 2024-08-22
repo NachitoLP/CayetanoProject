@@ -3,6 +3,8 @@ from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
+from django.db.models import Q
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import Reason, Service
 from ..personas.models import Person
@@ -48,7 +50,7 @@ def registerAtention(request):
             )
             new_service.save()
 
-            return redirect('/')
+            return redirect('/view/atentions')
 
         except (Reason.DoesNotExist, Person.DoesNotExist) as e:
             return render(request, 'atenciones/register.html', {
@@ -67,10 +69,49 @@ def registerAtention(request):
 
 @login_required
 def viewAtentions(request):
+    from_date = request.GET.get('from_date', '')
+    to_date = request.GET.get('to_date', '')
+    person_id = request.GET.get('person_id', '')
+    attention_id = request.GET.get('attention_id', '')
+
     try:
         attentions = Service.objects.all()
+        
+        # Filtrar por rango de fechas si se proporcionan
+        if from_date and to_date:
+            attentions = attentions.filter(service_date__range=[from_date, to_date])
+        
+        # Filtrar por persona atendida si se proporciona
+        if person_id:
+            attentions = attentions.filter(person_id=person_id)
+        
+        # Filtrar por ID de la atención si se proporciona
+        if attention_id:
+            attentions = attentions.filter(service_id=attention_id)
+        
+        # Obtener la lista de personas para el desplegable
+        people = Person.objects.all()
+        
+        # Paginación
+        paginator = Paginator(attentions, 5)  # Mostrar 5 atenciones por página
+        page = request.GET.get('page')  # Obtener el número de página de los parámetros de la solicitud
+
+        try:
+            attentions = paginator.page(page)
+        except PageNotAnInteger:
+            # Si la página no es un entero, muestra la primera página
+            attentions = paginator.page(1)
+        except EmptyPage:
+            # Si la página está fuera del rango, muestra la última página de resultados
+            attentions = paginator.page(paginator.num_pages)
+        
         return render(request, 'atenciones/view.html', {
-            'attentions': attentions
+            'attentions': attentions,
+            'people': people,
+            'from_date': from_date,
+            'to_date': to_date,
+            'person_id': person_id,
+            'attention_id': attention_id
         })
     except Exception as e:
         return render(request, 'atenciones/view.html', {

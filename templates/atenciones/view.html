@@ -50,7 +50,36 @@
         {{ error }}
     </div>
     {% endif %}
-    
+
+    <form method="get" action="" class="form-group search_view_attentions_form">
+        <div class="form-group">
+            <label for="from_date">Fecha Desde:</label>
+            <input type="date" id="from_date" name="from_date" value="{{ from_date }}" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="to_date">Fecha Hasta:</label>
+            <input type="date" id="to_date" name="to_date" value="{{ to_date }}" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="person_id">Persona Atendida:</label>
+            <select id="person_id" name="person_id" class="form-control">
+                <option value="">--Seleccionar--</option>
+                {% for person in people %}
+                    <option value="{{ person.person_dni }}">{{ person.person_surname }} {{ person.person_name }} - {{ person.person_dni }}</option>  <!-- Cambia 'name' por el campo adecuado -->
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="attention_id">ID de la Atención:</label>
+            <input type="number" id="attention_id" name="attention_id" value="{{ attention_id }}" class="form-control">
+        </div>
+        
+        <div class="search_attentions_buttons">
+            <button type="submit" class="btn btn-primary" style="box-shadow: 0 2px 4px rgba(0, 0, 0, 0.34);">Buscar</button>
+            <a href="/view/atentions" class="btn btn-secondary" style="box-shadow: 0 2px 4px rgba(0, 0, 0, 0.34);">Limpiar Filtros</a>
+        </div>
+    </form>
+
     <table class="table table-striped">
         <thead>
             <tr>
@@ -74,9 +103,36 @@
         </tbody>
     </table>
 
-    <a href="/register/atention" class="btn btn-primary btn_register_new_atention">Registrar Atención</a>
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            {% if attentions.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?{% if from_date %}from_date={{ from_date }}&{% endif %}{% if to_date %}to_date={{ to_date }}&{% endif %}{% if person_id %}person_id={{ person_id }}&{% endif %}{% if attention_id %}attention_id={{ attention_id }}&{% endif %}page={{ attentions.previous_page_number }}" aria-label="Previous">
+                        <i class="fas fa-chevron-left"></i> <!-- Icono de FontAwesome para flecha hacia la izquierda -->
+                    </a>
+                </li>
+            {% endif %}
+    
+            <!-- Mostrar número de la página actual -->
+            <li class="page-item disabled">
+                <span class="page-link">
+                    Página {{ attentions.number }} de {{ attentions.paginator.num_pages }}
+                </span>
+            </li>
+    
+            {% if attentions.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?{% if from_date %}from_date={{ from_date }}&{% endif %}{% if to_date %}to_date={{ to_date }}&{% endif %}{% if person_id %}person_id={{ person_id }}&{% endif %}{% if attention_id %}attention_id={{ attention_id }}&{% endif %}page={{ attentions.next_page_number }}" aria-label="Next">
+                        <i class="fas fa-chevron-right"></i> <!-- Icono de FontAwesome para flecha hacia la derecha -->
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
 
-    <footer class="footer_log_in" style="position: absolute;">
+    <a href="/register/atention" class="btn btn-primary btn_register_new_atention" style="margin-bottom:50px;">Registrar Atención</a>
+
+    <footer class="footer_log_in">
         <p>Sistema elaborado por Tech Pro - 2024</p>
         <p><< Todos los derechos reservados >></p>
     </footer>
