@@ -29,7 +29,7 @@ class Service(models.Model):
     service_modified_date = models.DateTimeField('Fecha de modificación', auto_now=True)
     service_status = models.BooleanField('¿Se desarrolló el seguimiento correspondiente?')
     service_description = models.TextField('Descripción de la atención')
-    organism_id = models.ForeignKey(Organism,on_delete=models.CASCADE, verbose_name='Organismo interviniente', null=True)
+    organism_id = models.ForeignKey(Organism,on_delete=models.CASCADE, verbose_name='Organismo interviniente', null=True, blank=True)
     person_id = models.ForeignKey(Person,on_delete=models.CASCADE, verbose_name='Persona atendida')
     
     class Meta:
