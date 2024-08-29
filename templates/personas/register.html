@@ -32,7 +32,7 @@
                             <a class="nav-link" aria-current="page" href="/">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/view/atentions">Atenciones</a>
+                            <a class="nav-link" href="/view/attentions">Atenciones</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link active" href="/view/persons">Personas</a>
@@ -43,8 +43,10 @@
         </nav>
     </header>
 
+    <a href="#" class="go_back_arrow" onclick="window.history.back(); return false;"><i class="fas fa-arrow-left"></i></a>
+    
     <div>
-        <h2 class="atention_register_title">Registrar persona</h2>
+        <h2 class="attention_register_title">Registrar persona</h2>
 
         {% if error %}
             <div class="alert alert-danger">

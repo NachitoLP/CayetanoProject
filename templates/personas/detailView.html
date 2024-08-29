@@ -44,7 +44,7 @@
     </header>
     
     <a href="#" class="go_back_arrow" onclick="window.history.back(); return false;"><i class="fas fa-arrow-left"></i></a>
-    <h2 class="attention_register_title">Atenciones registradas</h2>
+    <h2 class="attention_register_title">Detalle de la Persona</h2>
     
     {% if error %}
     <div class="alert alert-danger">
@@ -52,40 +52,84 @@
     </div>
     {% endif %}
 
-    <form method="get" action="" class="form-group search_view_attentions_form">
-        <div class="form-group">
-            <label for="from_date">Fecha Desde:</label>
-            <input type="date" id="from_date" name="from_date" value="{{ from_date }}" class="form-control">
-        </div>
-        <div class="form-group">
-            <label for="to_date">Fecha Hasta:</label>
-            <input type="date" id="to_date" name="to_date" value="{{ to_date }}" class="form-control">
-        </div>
-        <div class="form-group">
-            <label for="person_id">Persona Atendida:</label>
-            <select id="person_id" name="person_id" class="form-control">
-                <option value="">--Seleccionar--</option>
-                {% for person in people %}
-                    <option value="{{ person.person_dni }}">{{ person.person_surname }} {{ person.person_name }} - {{ person.person_dni }}</option>  <!-- Cambia 'name' por el campo adecuado -->
-                {% endfor %}
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="attention_id">ID de la Atención:</label>
-            <input type="number" id="attention_id" name="attention_id" value="{{ attention_id }}" class="form-control">
-        </div>
-        
-        <div class="search_attentions_buttons">
-            <button type="submit" class="btn btn-primary" style="box-shadow: 0 2px 4px rgba(0, 0, 0, 0.34);">Buscar</button>
-            <a href="/view/attentions" class="btn btn-secondary" style="box-shadow: 0 2px 4px rgba(0, 0, 0, 0.34);">Limpiar Filtros</a>
-        </div>
-    </form>
+    <div class="card">
+        <button class="btn_modify_card" id="btn_modify_card"><i class="fas fa-pencil"></i></button>
+        <p><strong>DNI:</strong> {{ person.person_dni }}</p>
+        <p><strong>Nombre:</strong> {{ person.person_name }}</p>
+        <p><strong>Apellido:</strong> {{ person.person_surname }}</p>
+        <p><strong>Fecha de Nacimiento:</strong> {{ person.person_birthdate|date:"d/m/Y" }}</p>
+        <p><strong>Dirección:</strong> {{ person.person_address }}</p>
+        <p><strong>Teléfono:</strong> {{ person.person_phone }}</p>
+        <p><strong>¿Pertenece al Centro de Abuelos?</strong> {{ person.person_bg_center|yesno:"Sí,No" }}</p>
+        <p><strong>Observaciones:</strong> {{ person.person_observations }}</p>
+        <p><strong>Localidad:</strong> {{ person.locality_id }}</p>
+    </div>
+    <div class="overlay" id="overlay">
+        <div class="overlay-content">
+            <button id="close_overlay" class="btn_close_overlay">&times;</button>
+            <h2 class="modify_title">Editar Persona</h2>
+            <form method="POST" action="">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="person_dni">DNI: <p class="asterisk_required">*</p></label>
+                    <input name="person_dni" id="person_dni" class="form-control" required value="{{ person.person_dni }}">
+                </div> 
 
+                <div class="form-group">
+                    <label for="person_name">Nombre: <p class="asterisk_required">*</p></label>
+                    <input name="person_name" id="person_name" class="form-control" required value="{{ person.person_name }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="person_surname">Apellido: <p class="asterisk_required">*</p></label>
+                    <input name="person_surname" id="person_surname" class="form-control" required value="{{ person.person_surname }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="person_birthdate">Fecha de Nacimiento: <p class="asterisk_required">*</p></label>
+                    <input type="date" name="person_birthdate" id="person_birthdate" class="form-control" required value="{% if person.person_birthdate %}{{ person.person_birthdate|date:"Y-m-d" }}{% endif %}">
+                </div>
+                
+                <div class="form-group">
+                    <label for="person_address">Dirección:</label>
+                    <input type="text" name="person_address" id="person_address" class="form-control" value="{{ person.person_address }}">
+                </div>
+    
+                <div class="form-group">
+                    <label for="person_phone">Teléfono:</label>
+                    <input type="number" name="person_phone" id="person_phone" class="form-control" value="{{ person.person_phone }}">
+                </div>
+    
+                <div class="form-group form-check">
+                    <label for="person_bg_center" class="form-check-label">¿Pertenece al Centro de Abuelos?</label>
+                    <input type="checkbox" name="person_bg_center" id="person_bg_center" class="form-check-input" {% if person.person_bg_center %}checked{% endif %}>
+                </div>
+    
+                <div class="form-group">
+                    <label for="person_observations">Observaciones:</label>
+                    <textarea style="resize: none;" name="person_observations" id="person_observations" class="form-control">{{ person.person_observations }}</textarea>
+                </div>
+    
+                <div class="form-group">
+                    <label for="locality_id">Localidad: <p class="asterisk_required">*</p></label>
+                    <select name="locality_id" id="locality_id" class="form-control" required>
+                        <option value="">Seleccionar localidad</option>
+                        {% for locality in localities %}
+                            <option value="{{ locality.locality_id }}" {% if locality.locality_id == person.locality_id_id %}selected{% endif %}>{{ locality.locality_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn_register__FORM">Guardar cambios</button>
+            </form>
+        </div>
+    </div>
+
+    <h3 class="attention_register_title">Atenciones relacionadas</h3>
     <table class="table table-striped">
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Persona Atendida</th>
                 <th>Fecha de atención</th>
             </tr>
         </thead>
@@ -93,7 +137,6 @@
             {% for attention in attentions %}
             <tr>
                 <td><a href="/view/attentions/{{attention.service_id}}" style="text-decoration: none;">{{ attention.service_id }}</a></td>
-                <td>{{ attention.person_id.person_surname }} {{ attention.person_id.person_name }}</td>
                 <td>{{ attention.service_date|date:"d/m/Y H:i" }}</td>
             </tr>
             {% empty %}
@@ -109,7 +152,7 @@
             {% if attentions.has_previous %}
                 <li class="page-item">
                     <a class="page-link" href="?{% if from_date %}from_date={{ from_date }}&{% endif %}{% if to_date %}to_date={{ to_date }}&{% endif %}{% if person_id %}person_id={{ person_id }}&{% endif %}{% if attention_id %}attention_id={{ attention_id }}&{% endif %}page={{ attentions.previous_page_number }}" aria-label="Previous">
-                        <i class="fas fa-chevron-left"></i> <!-- Icono de FontAwesome para flecha hacia la izquierda -->
+                        <i class="fas fa-chevron-left"></i>
                     </a>
                 </li>
             {% endif %}
@@ -131,7 +174,7 @@
         </ul>
     </nav>
 
-    <a href="/register/attention" class="btn btn-primary btn_register_new_attention" style="margin-bottom:50px;">Registrar Atención</a>
+    <a href="{% url 'registerAttention' person_dni=person.person_dni %}" class="btn btn-primary btn_register_new_attention" style="margin-bottom:50px;">Registrar Atención</a>
 
     <footer class="footer_log_in">
         <p>Sistema elaborado por Tech Pro - 2024</p>
@@ -154,6 +197,16 @@
             if (!button.contains(event.target) && !menu.contains(event.target)) {
                 menu.style.display = 'none';
             }
+        });
+    </script>
+
+    <script>
+        document.getElementById('btn_modify_card').addEventListener('click', function() {
+            document.getElementById('overlay').classList.add('active');
+        });
+
+        document.getElementById('close_overlay').addEventListener('click', function() {
+            document.getElementById('overlay').classList.remove('active');
         });
     </script>
 

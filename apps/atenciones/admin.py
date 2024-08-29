@@ -14,6 +14,11 @@ class ServiceAdmin(admin.ModelAdmin):
         'service_status',
         'organism_id'
     )
+    list_display = (
+        'formatted_service_date',
+        'person_id',
+        'formatted_service_modified_date',
+    )
     
 
 admin.site.register(Reason, ReasonAdmin)

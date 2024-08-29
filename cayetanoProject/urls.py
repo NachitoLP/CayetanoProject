@@ -17,16 +17,19 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from apps.home.views import IndexView, sessionLogIn, sessionLogOut
-from apps.atenciones.views import registerAtention, viewAtentions
-from apps.personas.views import registerPerson, viewPersons
+from apps.atenciones.views import registerAttention, viewAttentions, viewAttentionDetail
+from apps.personas.views import registerPerson, viewPersons, viewPersonDetail
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', IndexView.as_view()),
     path('sign-in/', sessionLogIn),
     path('log-out/', sessionLogOut),
-    path('register/atention', registerAtention),
-    path('view/atentions', viewAtentions),
+    path('register/attention', registerAttention, name='registerAttention'),
+    path('register/attention/<int:person_dni>/', registerAttention, name='registerAttention'),
+    path('view/attentions', viewAttentions),
+    path('view/attentions/<int:attention_id>', viewAttentionDetail, name='viewAttentionDetail'),
     path('register/person', registerPerson),
     path('view/persons', viewPersons),
+    path('view/persons/<int:person_dni>', viewPersonDetail, name='viewPersonDetail')
 ]

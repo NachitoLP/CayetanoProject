@@ -198,7 +198,7 @@
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.868);
     }
 
-    .atention_btn {
+    .attention_btn {
         background-color: green;
     }
     .person_btn {
@@ -245,7 +245,7 @@
 
 /* VIEW ATENCIONES Y PERSONAS */
 
-.atention_register_title {
+.attention_register_title {
     text-align: center;
     margin: 20px auto 0px;
 }
@@ -281,7 +281,7 @@
     font-style: italic; /* Estilo en cursiva para el texto */
 }
 
-.btn_register_new_atention{
+.btn_register_new_attention{
     width: 180px;
     display: block;
     margin: auto;
@@ -325,4 +325,135 @@
 .search_attentions_buttons {
     margin: auto;
     text-align: center;
+}
+
+
+/* VISTA DE ATENCION Y PERSONA */
+
+.modify_title{
+    margin: 5px auto 10px;
+    text-align: center;
+}
+
+.go_back_arrow{
+    position: absolute;
+    margin: 21px 20px;
+    font-size: 20px;
+}
+
+.btn_modify_card{
+    background-color: transparent;
+    border:none;
+    position: absolute;
+    right: 8px;
+    top: 7px;
+    font-size: 20px;
+    color: #0d6efd;
+}
+
+.btn_close_overlay{
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    background: transparent;
+    color: red;
+    border: none;
+    font-size: 35px;
+    cursor: pointer;
+}
+
+.card {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 90%;
+    margin: 20px auto;
+    padding: 20px;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.card p {
+    margin: 0;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.card p:last-child {
+    border-bottom: none;
+}
+
+.overlay {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    padding: 20px 0px 50px;
+    z-index: 1000;
+}
+
+.overlay.active {
+    display: flex;
+}
+
+.overlay-content {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.overlay-content form {
+    display: flex;
+    flex-direction: column;
+}
+
+.overlay-content form label {
+    margin-bottom: 5px;
+}
+
+.overlay-content form input,
+.overlay-content form select,
+.overlay-content form textarea {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.overlay-content form button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.overlay-content form button:hover {
+    background-color: #0056b3;
+}
+
+.overlay-content .form-group{
+    margin: 5px auto;
+}
+
+.btn_register__FORM{
+    margin: 20px auto;
+}
+
+@media (max-width: 600px) {
+    .card {
+        padding: 15px;
+    }
+    .overlay-content {
+        width: 90%;
+    }
 }

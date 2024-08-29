@@ -37,6 +37,15 @@ class Service(models.Model):
         verbose_name = 'Atención'
         verbose_name_plural = 'Atenciones'
     
+    def formatted_service_date(self):
+        return self.service_date.strftime('%d-%m-%Y %H:%M:%S')
+    
+    def formatted_service_modified_date(self):
+        return self.service_modified_date.strftime('%d-%m-%Y %H:%M:%S')
+    
+    formatted_service_date.short_description = 'Fecha de Atención'
+    formatted_service_modified_date.short_description = 'Fecha de Modificación'
+    
     def __str__(self):
         local_time = localtime(self.service_date)
         return f'{local_time.strftime("%d-%m-%Y %H:%M:%S")} - {self.person_id}'

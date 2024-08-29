@@ -1,0 +1,155 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+        <script src="https://kit.fontawesome.com/5cd1008cde.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        <link rel="icon" href="{% static 'images/logo.jpg' %}" type="image/jpg">
+        <title>Casa Social San Cayetano</title>
+    </head>
+    <body class="body_home">
+        <header class="body_header">
+            <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="material-symbols-outlined navbar-toggler-icon">menu</span>
+                </button>
+                <button id="user_toggle_button" class="navbar_user_button" style="border: none;background-color: transparent;font-size: 30px;"><i class="fa-solid fa-circle-user list-icons"></i></button>
+                <div id="user_menu">
+                    <a href="/log-out">Cerrar sesión</a>
+                </div>
+                <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="/">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/view/attentions">Atenciones</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/view/persons">Personas</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    <a href="#" class="go_back_arrow" onclick="window.history.back(); return false;"><i class="fas fa-arrow-left"></i></a>
+    <h2 class="attention_register_title">Detalle de Atención</h2>
+    
+    {% if error %}
+    <div class="alert alert-danger">
+        {{ error }}
+    </div>
+    {% endif %}
+
+    <div class="card">
+        <button class="btn_modify_card" id="btn_modify_card"><i class="fas fa-pencil"></i></button>
+        <p><strong>ID de atención:</strong> {{ attention.service_id }}</p>
+        <p><strong>Fecha de atención:</strong> {{ attention.service_date }}</p>
+        <p><strong>Persona atendida:</strong> <a href="/view/persons/{{attention.person_id.person_dni}}" style="text-decoration: none;">{{ attention.person_id }}</a></p>
+        <p><strong>Motivo de atención:</strong> {{ attention.service_reason_id }}</p>
+        <p><strong>Seguimiento de la atención:</strong> {{ attention.service_status|yesno:"Sí,No" }}</p>
+        <p><strong>Detalles:</strong> {{ attention.service_description }}</p>
+        <p><strong>Organismo interviniente:</strong> {{ attention.organism_id|default:"N/A" }}</p>
+    </div>
+    <div class="overlay" id="overlay">
+        <div class="overlay-content">
+            <button id="close_overlay" class="btn_close_overlay">&times;</button>
+            <h2 class="modify_title">Editar Atención</h2>
+            <form method="POST" action="">
+                {% csrf_token %}
+                <div class="form-group">
+                    <p><strong>Fecha de atención:</strong> {{ attention.service_date }}</p>
+                </div>
+
+                <div class="form-group">
+                    <p><strong>Persona atendida:</strong> {{ attention.person_id }}</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="service_reason_id">Motivo <p class="asterisk_required">*</p></label>
+                    <select name="service_reason_id" id="service_reason_id" class="form-control" required>
+                        {% for reason in reasons %}
+                            <option value="{{ reason.service_reason_id }}" 
+                                {% if reason.service_reason_id == attention.service_reason_id_id %}selected{% endif %}>
+                                {{ reason.service_reason }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="organism_id">Organismo</label>
+                    <select name="organism_id" id="organism_id" class="form-control">
+                        <option value="">N/A</option>
+                        {% for organism in organisms %}
+                            <option value="{{ organism.organism_id }}" 
+                                {% if organism.organism_id == attention.organism_id_id %}selected{% endif %}>
+                                {{ organism.organism_name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="service_description">Descripción <p class="asterisk_required">*</p></label>
+                    <textarea name="service_description" id="service_description" class="form-control" required style="resize: none;">{{ attention.service_description }}</textarea>
+                </div>
+
+                <div class="form-group form-check">
+                    <label for="service_status" class="form-check-label">¿Se desarrolló el seguimiento correspondiente?</label>
+                    <input type="checkbox" name="service_status" id="service_status" class="form-check-input" {% if attention.service_status %}checked{% endif %}>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn_register__FORM">Guardar cambios</button>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer_log_in" style="position: absolute;">
+        <p>Sistema elaborado por Tech Pro - 2024</p>
+        <p><< Todos los derechos reservados >></p>
+    </footer>
+
+    <script>
+        document.getElementById('user_toggle_button').addEventListener('click', function() {
+            var menu = document.getElementById('user_menu');
+            if (menu.style.display === 'block') {
+                menu.style.display = 'none';
+            } else {
+                menu.style.display = 'block';
+            }
+        });
+
+        window.addEventListener('click', function(event) {
+            var button = document.getElementById('user_toggle_button');
+            var menu = document.getElementById('user_menu');
+            if (!button.contains(event.target) && !menu.contains(event.target)) {
+                menu.style.display = 'none';
+            }
+        });
+    </script>
+
+    <script>
+        document.getElementById('btn_modify_card').addEventListener('click', function() {
+            document.getElementById('overlay').classList.add('active');
+        });
+
+        document.getElementById('close_overlay').addEventListener('click', function() {
+            document.getElementById('overlay').classList.remove('active');
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -32,7 +32,7 @@
                             <a class="nav-link" aria-current="page" href="/">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/view/atentions">Atenciones</a>
+                            <a class="nav-link" href="/view/attentions">Atenciones</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link active" href="/view/persons">Personas</a>
@@ -42,8 +42,9 @@
             </div>
         </nav>
     </header>
-
-    <h2 class="atention_register_title">Personas registradas</h2>
+    
+    <a href="#" class="go_back_arrow" onclick="window.history.back(); return false;"><i class="fas fa-arrow-left"></i></a>
+    <h2 class="attention_register_title">Personas registradas</h2>
 
     {% if error %}
         <div class="alert alert-danger">
@@ -59,17 +60,17 @@
     <table class="table table-striped">
         <thead>
             <tr>
+                <th>DNI</th>
                 <th>Nombre</th>
                 <th>Apellido</th>
-                <th>DNI</th>
             </tr>
         </thead>
         <tbody>
             {% for person in people %}
                 <tr>
+                    <td><a href="/view/persons/{{person.person_dni}}" style="text-decoration: none;">{{ person.person_dni }}</a></td>
                     <td>{{ person.person_name }}</td>
                     <td>{{ person.person_surname }}</td>
-                    <td>{{ person.person_dni }}</td>
                 </tr>
             {% empty %}
                 <tr>
@@ -106,7 +107,7 @@
         </ul>
     </nav>
 
-    <a href="/register/person" class="btn btn-primary btn_register_new_atention">Registrar Persona</a>
+    <a href="/register/person" class="btn btn-primary btn_register_new_attention">Registrar Persona</a>
 
     <footer class="footer_log_in" style="position: absolute;">
         <p>Sistema elaborado por Tech Pro - 2024</p>

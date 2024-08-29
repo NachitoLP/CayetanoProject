@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
@@ -16,12 +16,17 @@ with open("secret.json") as f:
     secret = json.load(f)
 
 @login_required
-def registerAtention(request):
+def registerAttention(request, person_dni=None):
+    person = None
+    
+    if person_dni:
+        person = get_object_or_404(Person, pk=person_dni)
     if request.method == "GET":
         return render(request, 'atenciones/register.html', {
             'reasons': Reason.objects.all(),
             'organisms': Organism.objects.all(),
             'people': Person.objects.all(),
+            'personNewAttention': person,
         })
     elif request.method == "POST":
         service_reason_id = request.POST.get('service_reason_id')
@@ -36,6 +41,7 @@ def registerAtention(request):
                 'reasons': Reason.objects.all(),
                 'organisms': Organism.objects.all(),
                 'people': Person.objects.all(),
+                'personNewAttention': person,
             })
 
         organism = None if organism_id == '' else Organism.objects.get(pk=organism_id)
@@ -50,7 +56,7 @@ def registerAtention(request):
             )
             new_service.save()
 
-            return redirect('/view/atentions')
+            return redirect('/view/attentions')
 
         except (Reason.DoesNotExist, Person.DoesNotExist) as e:
             return render(request, 'atenciones/register.html', {
@@ -58,6 +64,7 @@ def registerAtention(request):
                 'reasons': Reason.objects.all(),
                 'organisms': Organism.objects.all(),
                 'people': Person.objects.all(),
+                'personNewAttention': person,
             })
         except ValidationError as e:
             return render(request, 'atenciones/register.html', {
@@ -65,10 +72,11 @@ def registerAtention(request):
                 'reasons': Reason.objects.all(),
                 'organisms': Organism.objects.all(),
                 'people': Person.objects.all(),
+                'personNewAttention': person,
             })
 
 @login_required
-def viewAtentions(request):
+def viewAttentions(request):
     from_date = request.GET.get('from_date', '')
     to_date = request.GET.get('to_date', '')
     person_id = request.GET.get('person_id', '')
@@ -121,3 +129,33 @@ def viewAtentions(request):
         return render(request, 'atenciones/view.html', {
             'error': 'No se pudieron cargar las atenciones.',
         })
+
+@login_required
+def viewAttentionDetail(request, attention_id):
+    # Obtener la atención específica o devolver un 404 si no se encuentra
+    attention = get_object_or_404(Service, pk=attention_id)
+    
+    # Si se modifican los datos, va a recibir un método POST.
+    if request.method == 'POST':
+        # Obtener los datos del formulario que puedan modificarse
+        service_reason_id = request.POST.get('service_reason_id')
+        service_description = request.POST.get('service_description')
+        service_status = 'service_status' in request.POST  # Checkbox booleano
+        organism_id = request.POST.get('organism_id', None)  # Puede ser None si no se selecciona
+
+        organism = None if organism_id == '' else Organism.objects.get(pk=organism_id)
+        
+        # Actualizar la atención con los datos del formulario
+        attention.service_reason_id = Reason.objects.get(pk=service_reason_id)
+        attention.service_description = service_description
+        attention.service_status = service_status
+        attention.organism_id = organism
+        attention.save()
+
+        return redirect('viewAttentionDetail', attention_id=attention.service_id)  # Redirigir para evitar reposteo
+
+    return render(request, 'atenciones/detailView.html', {
+        'attention': attention,
+        'reasons': Reason.objects.all(),
+        'organisms': Organism.objects.all()
+    })
