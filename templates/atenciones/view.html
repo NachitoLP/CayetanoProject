@@ -13,7 +13,7 @@
         <script src="https://kit.fontawesome.com/5cd1008cde.js" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="{% static 'css/style.css' %}">
         <link rel="icon" href="{% static 'images/logo.jpg' %}" type="image/jpg">
-        <title>Casa Social San Cayetano</title>
+        <title>Casa Social</title>
     </head>
     <body class="body_home">
         <header class="body_header">
@@ -37,6 +37,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/view/persons">Personas</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin">Administrador</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -53,20 +56,31 @@
     {% endif %}
 
     <form method="get" action="" class="form-group search_view_attentions_form">
-        <div class="form-group">
-            <label for="from_date">Fecha Desde:</label>
-            <input type="date" id="from_date" name="from_date" value="{{ from_date }}" class="form-control">
-        </div>
-        <div class="form-group">
-            <label for="to_date">Fecha Hasta:</label>
-            <input type="date" id="to_date" name="to_date" value="{{ to_date }}" class="form-control">
+        <div class="div_padre_fecha_atenciones">
+            <div class="form-group">
+                <label for="from_date">Fecha Desde:</label>
+                <input type="date" id="from_date" name="from_date" value="{{ from_date }}" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="to_date">Fecha Hasta:</label>
+                <input type="date" id="to_date" name="to_date" value="{{ to_date }}" class="form-control">
+            </div>
         </div>
         <div class="form-group">
             <label for="person_id">Persona Atendida:</label>
             <select id="person_id" name="person_id" class="form-control">
                 <option value="">--Seleccionar--</option>
                 {% for person in people %}
-                    <option value="{{ person.person_dni }}">{{ person.person_surname }} {{ person.person_name }} - {{ person.person_dni }}</option>  <!-- Cambia 'name' por el campo adecuado -->
+                    <option value="{{ person.person_dni }}">{{ person.person_surname }} {{ person.person_name }} - {{ person.person_dni }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="headquarter_id">Sede de atención:</label>
+            <select id="headquarter_id" name="headquarter_id" class="form-control">
+                <option value="">--Seleccionar--</option>
+                {% for headquarter in headquarters %}
+                    <option value="{{ headquarter.headquarter_id }}">{{ headquarter.headquarter_name }}</option>
                 {% endfor %}
             </select>
         </div>

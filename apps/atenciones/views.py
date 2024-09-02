@@ -50,7 +50,6 @@ def registerAttention(request, person_dni=None):
         organism = None if organism_id == '' else Organism.objects.get(pk=organism_id)
 
         try:
-            print(service_headquarter)
             new_service = Service(
                 service_reason_id=Reason.objects.get(pk=service_reason_id),
                 person_id=Person.objects.get(pk=person_id),
@@ -89,6 +88,7 @@ def viewAttentions(request):
     to_date = request.GET.get('to_date', '')
     person_id = request.GET.get('person_id', '')
     attention_id = request.GET.get('attention_id', '')
+    headquarter_id = request.GET.get('headquarter_id', '')
 
     try:
         attentions = Service.objects.all()
@@ -109,9 +109,12 @@ def viewAttentions(request):
         if attention_id:
             attentions = attentions.filter(service_id=attention_id)
         
-        # Obtener la lista de personas para el desplegable
-        people = Person.objects.all()
+        if headquarter_id:
+            attentions = attentions.filter(service_headquarter=headquarter_id)
         
+        # Obtener la lista de personas y sedes para el desplegable
+        people = Person.objects.all()
+        headquarters = Headquarter.objects.all()
 
         paginator = Paginator(attentions, 5)  # Mostrar 5 atenciones por página
         page = request.GET.get('page')  # Obtener el número de página de los parámetros de la solicitud
@@ -128,10 +131,12 @@ def viewAttentions(request):
         return render(request, 'atenciones/view.html', {
             'attentions': attentions,
             'people': people,
+            'headquarters': headquarters,
             'from_date': from_date,
             'to_date': to_date,
             'person_id': person_id,
-            'attention_id': attention_id
+            'attention_id': attention_id,
+            'headquarter_id': headquarter_id
         })
     except Exception as e:
         return render(request, 'atenciones/view.html', {

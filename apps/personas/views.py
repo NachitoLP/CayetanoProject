@@ -159,11 +159,9 @@ def viewPersonDetail(request, person_dni):
             })
         
         try:
-            print(f'person_birthdate_str: {person_birthdate_str}, {type(person_birthdate_str)}')
-            
             person_birthdate = parse_date(person_birthdate_str)
             
-            print(f'Parsed date: {person_birthdate} , {type(person_birthdate)}')
+            
             
             if not person_birthdate:
                 raise ValidationError('La fecha de nacimiento no es válida.')
