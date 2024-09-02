@@ -6,7 +6,7 @@ from django.core.exceptions import ValidationError
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from .models import Reason, Service
+from .models import Reason, Service, Headquarter
 from ..personas.models import Person
 from ..organismos.models import Organism
 
@@ -27,6 +27,7 @@ def registerAttention(request, person_dni=None):
             'organisms': Organism.objects.all(),
             'people': Person.objects.all(),
             'personNewAttention': person,
+            'headquarters': Headquarter.objects.all(),
         })
     elif request.method == "POST":
         service_reason_id = request.POST.get('service_reason_id')
@@ -34,6 +35,7 @@ def registerAttention(request, person_dni=None):
         service_description = request.POST.get('service_description')
         service_status = request.POST.get('service_status') == 'on'
         organism_id = request.POST.get('organism_id')
+        service_headquarter = request.POST.get('service_headquarter')
 
         if not service_reason_id or not person_id or not service_description:
             return render(request, 'atenciones/register.html', {
@@ -42,17 +44,21 @@ def registerAttention(request, person_dni=None):
                 'organisms': Organism.objects.all(),
                 'people': Person.objects.all(),
                 'personNewAttention': person,
+                'headquarters': Headquarter.objects.all(),
             })
 
         organism = None if organism_id == '' else Organism.objects.get(pk=organism_id)
 
         try:
+            print(service_headquarter)
             new_service = Service(
                 service_reason_id=Reason.objects.get(pk=service_reason_id),
                 person_id=Person.objects.get(pk=person_id),
                 service_description=service_description,
                 service_status=service_status,
-                organism_id = organism 
+                organism_id = organism,
+                service_headquarter = Headquarter.objects.get(pk=service_headquarter),
+                user = request.user
             )
             new_service.save()
 
@@ -65,6 +71,7 @@ def registerAttention(request, person_dni=None):
                 'organisms': Organism.objects.all(),
                 'people': Person.objects.all(),
                 'personNewAttention': person,
+                'headquarters': Headquarter.objects.all(),
             })
         except ValidationError as e:
             return render(request, 'atenciones/register.html', {
@@ -73,6 +80,7 @@ def registerAttention(request, person_dni=None):
                 'organisms': Organism.objects.all(),
                 'people': Person.objects.all(),
                 'personNewAttention': person,
+                'headquarters': Headquarter.objects.all(),
             })
 
 @login_required
@@ -142,6 +150,7 @@ def viewAttentionDetail(request, attention_id):
         service_description = request.POST.get('service_description')
         service_status = 'service_status' in request.POST  # Checkbox booleano
         organism_id = request.POST.get('organism_id', None)  # Puede ser None si no se selecciona
+        service_headquarter = request.POST.get('service_headquarter')
 
         organism = None if organism_id == '' else Organism.objects.get(pk=organism_id)
         
@@ -150,6 +159,7 @@ def viewAttentionDetail(request, attention_id):
         attention.service_description = service_description
         attention.service_status = service_status
         attention.organism_id = organism
+        attention.service_headquarter = Headquarter.objects.get(pk=service_headquarter)
         attention.save()
 
         return redirect('viewAttentionDetail', attention_id=attention.service_id)  # Redirigir para evitar reposteo
@@ -157,5 +167,6 @@ def viewAttentionDetail(request, attention_id):
     return render(request, 'atenciones/detailView.html', {
         'attention': attention,
         'reasons': Reason.objects.all(),
-        'organisms': Organism.objects.all()
+        'organisms': Organism.objects.all(),
+        'headquarters': Headquarter.objects.all(),
     })

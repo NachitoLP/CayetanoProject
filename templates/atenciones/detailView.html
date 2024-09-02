@@ -57,6 +57,7 @@
         <p><strong>ID de atención:</strong> {{ attention.service_id }}</p>
         <p><strong>Fecha de atención:</strong> {{ attention.service_date }}</p>
         <p><strong>Persona atendida:</strong> <a href="/view/persons/{{attention.person_id.person_dni}}" style="text-decoration: none;">{{ attention.person_id }}</a></p>
+        <p><strong>Sede de atención:</strong> {{ attention.service_headquarter }}</p>
         <p><strong>Motivo de atención:</strong> {{ attention.service_reason_id }}</p>
         <p><strong>Seguimiento de la atención:</strong> {{ attention.service_status|yesno:"Sí,No" }}</p>
         <p><strong>Detalles:</strong> {{ attention.service_description }}</p>
@@ -74,6 +75,16 @@
 
                 <div class="form-group">
                     <p><strong>Persona atendida:</strong> {{ attention.person_id }}</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="service_headquarter">Sede de atención</label>
+                    <select name="service_headquarter" id="service_headquarter" class="form-control" required>
+                        <option value=""></option>
+                        {% for headquarter in headquarters %}
+                            <option value="{{ headquarter.headquarter_id }}" {% if headquarter.headquarter_id == attention.service_headquarter_id_id %}selected{% endif %}>{{ headquarter.headquarter_name }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
 
                 <div class="form-group">

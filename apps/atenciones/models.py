@@ -1,12 +1,26 @@
 from django.db import models
 from django.utils.timezone import localtime
+from django.conf import settings
+from auditlog.registry import auditlog
 
 from ..personas.models import Person
 from ..organismos.models import Organism
 
-from auditlog.registry import auditlog
-
 import datetime
+
+class Headquarter(models.Model):
+    headquarter_id = models.AutoField('ID Sede', primary_key=True)
+    headquarter_name = models.CharField('Nombre Sede', max_length=100)
+    
+    class Meta:
+        ordering = ['headquarter_name']
+        verbose_name = 'Sede'
+        verbose_name_plural = 'Sedes'
+    
+    def __str__(self):
+        return self.headquarter_name
+
+auditlog.register(Headquarter)
 
 class Reason(models.Model):
     service_reason_id = models.AutoField('ID Motivo', primary_key= True)
@@ -31,6 +45,8 @@ class Service(models.Model):
     service_description = models.TextField('Descripción de la atención')
     organism_id = models.ForeignKey(Organism,on_delete=models.CASCADE, verbose_name='Organismo interviniente', null=True, blank=True)
     person_id = models.ForeignKey(Person,on_delete=models.CASCADE, verbose_name='Persona atendida')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Usuario encargado')
+    service_headquarter = models.ForeignKey(Headquarter, on_delete=models.SET_NULL, blank=True, null=True, verbose_name='Sede de atención')
     
     class Meta:
         ordering = ['-service_date']

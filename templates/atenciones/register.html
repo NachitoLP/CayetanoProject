@@ -78,6 +78,16 @@
             </div>
 
             <div class="form-group">
+                <label for="service_headquarter">Sede de atención</label>
+                <select name="service_headquarter" id="service_headquarter" class="form-control" required>
+                    <option value=""></option>
+                    {% for headquarter in headquarters %}
+                        <option value="{{ headquarter.headquarter_id }}">{{ headquarter.headquarter_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
                 <label for="organism_id">Organismo:</label>
                 <select name="organism_id" id="organism_id" class="form-control">
                     <option value="">N/A</option>
