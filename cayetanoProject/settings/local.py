@@ -41,7 +41,7 @@ TIME_ZONE = 'America/Argentina/Buenos_Aires'
 
 USE_I18N = True
 
-STATIC_URL = 'static/'
+STATIC_URL = 'public/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'public')
