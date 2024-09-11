@@ -1,14 +1,12 @@
 from pathlib import Path
 import json
-
-with open("secret.json") as f:
-    secret = json.load(f)
+import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-SECRET_KEY = secret["SECRET_KEY"];
+SECRET_KEY = os.getenv("SECRET_KEY");
 
-LOGIN_URL = secret["LOGIN_URL"];
+LOGIN_URL = os.getenv("LOGIN_URL");
 
 INSTALLED_APPS = [
     'jazzmin',

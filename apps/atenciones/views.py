@@ -10,11 +10,6 @@ from .models import Reason, Service, Headquarter
 from ..personas.models import Person
 from ..organismos.models import Organism
 
-import json
-
-with open("secret.json") as f:
-    secret = json.load(f)
-
 @login_required
 def registerAttention(request, person_dni=None):
     person = None

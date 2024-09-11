@@ -1,5 +1,4 @@
 from .base import *
-import os
 
 DEBUG = True
 
@@ -7,16 +6,12 @@ ALLOWED_HOSTS = ['*']
 
 DATABASES = {
     'default': {
-        'ENGINE': 'mssql',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'CAYETANO_DB',
-        'USER': secret["DB_USER"],
-        'PASSWORD': secret['DB_PASSWORD'],
-        'HOST': 'FX-NB-001\\MSSQLSERVER02',
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': 'localhost',
         'PORT': '',
-        'OPTIONS': {
-            'driver': 'ODBC Driver 17 for SQL Server',
-            'extra_params': 'TrustServerCertificate=yes;',
-        },
     }
 }
 

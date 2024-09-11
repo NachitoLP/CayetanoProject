@@ -9,15 +9,10 @@ from django.http import HttpResponse
 
 from ..atenciones.models import Reason, Service, Headquarter
 
-import json
-
+import os
 import openpyxl
 from openpyxl.styles import Alignment
 
-# Create your views here.
-
-with open("secret.json") as f:
-    secret = json.load(f)
 
 def sessionLogIn(request):
     if request.method == "GET":
@@ -35,12 +30,12 @@ def sessionLogIn(request):
                 })
             else:
                 login(request, user)
-                return redirect(secret["SERVER_DNS"])
+                return redirect(os.getenv('SERVER_DNS'))
 
 
 def sessionLogOut(request) :
     logout(request)
-    return redirect(secret["SERVER_DNS"])
+    return redirect(os.getenv('SERVER_DNS'))
 
 
 class IndexView(LoginRequiredMixin, TemplateView):

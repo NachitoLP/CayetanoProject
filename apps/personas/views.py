@@ -11,12 +11,7 @@ from .models import Person, Province, Locality
 from ..atenciones.models import Service, Reason
 from ..organismos.models import Organism
 
-import json
 import datetime
-
-with open("secret.json") as f:
-    secret = json.load(f)
-
 
 @login_required
 def registerPerson(request):
