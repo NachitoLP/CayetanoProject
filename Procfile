@@ -1,1 +1,1 @@
-gunicorn cayetanoProject.wsgi
+web: gunicorn cayetanoProject.wsgi
