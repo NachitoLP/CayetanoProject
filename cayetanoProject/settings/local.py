@@ -1,22 +1,24 @@
 from .base import *
 import os
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
 DATABASES = {
     'default': {
-        'ENGINE': 'sql_server.pyodbc',
+        'ENGINE': 'mssql',
         'NAME': 'CAYETANO_DB',
         'USER': secret["DB_USER"],
         'PASSWORD': secret['DB_PASSWORD'],
-        'HOST': 'FX-NB-001\MSSQLSERVER02',
+        'HOST': 'FX-NB-001\\MSSQLSERVER02',
         'PORT': '',
-        'OPTIONS': {'driver': 'ODBC Driver 17 for SQL Server', 'extra_params': 'TrustServerCertificate=yes;'}
+        'OPTIONS': {
+            'driver': 'ODBC Driver 17 for SQL Server',
+            'extra_params': 'TrustServerCertificate=yes;',
+        },
     }
 }
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {
