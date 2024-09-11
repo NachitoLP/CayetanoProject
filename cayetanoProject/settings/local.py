@@ -3,7 +3,7 @@ import os
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['*.onrender.com']
+ALLOWED_HOSTS = ['cayetanoproject.onrender.com']
 
 DATABASES = {
     'default': {
