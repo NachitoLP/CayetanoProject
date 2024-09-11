@@ -3,7 +3,7 @@ import os
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*.onrender.com']
 
 DATABASES = {
     'default': {
