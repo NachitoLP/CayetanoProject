@@ -16,13 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from apps.home.views import IndexView, sessionLogIn, sessionLogOut
+from apps.home.views import IndexView, sessionLogIn, sessionLogOut, export_to_excel
 from apps.atenciones.views import registerAttention, viewAttentions, viewAttentionDetail
 from apps.personas.views import registerPerson, viewPersons, viewPersonDetail
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', IndexView.as_view()),
+    path('export/', export_to_excel, name='export_to_excel'),
     path('sign-in/', sessionLogIn),
     path('log-out/', sessionLogOut),
     path('register/attention', registerAttention, name='registerAttention'),

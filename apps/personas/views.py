@@ -88,8 +88,8 @@ def viewPersons(request):
     try:
         if query:
             people = Person.objects.filter(
-                Q(person_dni__icontains=query) | Q(person_surname__icontains=query)
-            ) #Se hace un filtrado tanto por DNI como por Apellido, y el __icontains hace una búsqueda insensible a mayúsculas y minúsculas
+                Q(person_dni__istartswith=query) | Q(person_surname__istartswith=query)
+            ) #Se hace un filtrado tanto por DNI como por Apellido, y el __istartswith hace una búsqueda insensible a mayúsculas y minúsculas
         else:
             # Si no hay término de búsqueda, muestra todos los registros
             people = Person.objects.all()

@@ -4,10 +4,15 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
+from django.utils.timezone import make_naive
+from django.http import HttpResponse
 
 from ..atenciones.models import Reason, Service, Headquarter
 
 import json
+
+import openpyxl
+from openpyxl.styles import Alignment
 
 # Create your views here.
 
@@ -105,3 +110,68 @@ class IndexView(LoginRequiredMixin, TemplateView):
         })
 
         return context
+
+def export_to_excel(request):
+    # Obtener parámetros de la solicitud para estadísticas
+    from_date = request.GET.get('from_date', '')
+    to_date = request.GET.get('to_date', '')
+    service_reason_id = request.GET.get('service_reason_id', '')
+    headquarter_id = request.GET.get('headquarter_id', '')
+
+    # Filtrar los datos
+    attentions = Service.objects.all()
+
+    if from_date or to_date or service_reason_id or headquarter_id:
+        if from_date and to_date:
+            attentions = attentions.filter(service_date__range=[from_date, to_date])
+        elif from_date:
+            attentions = attentions.filter(service_date__gte=from_date)
+        elif to_date:
+            attentions = attentions.filter(service_date__lte=to_date)
+        if service_reason_id:
+            attentions = attentions.filter(service_reason_id=service_reason_id)
+        if headquarter_id:
+            attentions = attentions.filter(service_headquarter=headquarter_id)
+
+    # Crear un archivo Excel
+    workbook = openpyxl.Workbook()
+    worksheet = workbook.active
+    worksheet.title = 'Atenciones'
+
+    # Escribir los encabezados
+    headers = ['ID', 'Motivo del Servicio', 'Sede de Atención', 'Persona Atendida', 'Organismo', 'Fecha del Servicio']
+    worksheet.append(headers)
+    
+    column_widths = [10, 30, 30, 30, 30, 40]
+    for i, width in enumerate(column_widths, start=1):
+        worksheet.column_dimensions[openpyxl.utils.get_column_letter(i)].width = width
+
+    # Aplicar estilos
+    header_font = openpyxl.styles.Font(bold=True)
+    header_alignment = Alignment(horizontal='center')
+
+    for cell in worksheet[1]:
+        cell.alignment = header_alignment
+        cell.font = header_font
+
+    # Escribir los datos
+    for attention in attentions:
+        service_date = make_naive(attention.service_date) if attention.service_date else ''
+        worksheet.append([
+            attention.service_id,
+            attention.service_reason_id.service_reason,
+            attention.service_headquarter.headquarter_name,
+            attention.person_id.person_surname + ' ' + attention.person_id.person_name,
+            attention.organism_id if attention.organism_id else 'N/A',
+            service_date.strftime('%d-%m-%Y %H:%M:%S') if service_date else '',
+        ])
+    
+    for row in worksheet.iter_rows(min_row=2, max_col=worksheet.max_column, max_row=worksheet.max_row):
+        for cell in row:
+            cell.alignment = Alignment(horizontal='center', vertical='center')
+
+    # Crear la respuesta HTTP con el archivo Excel
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename="atenciones.xlsx"'
+    workbook.save(response)
+    return response

@@ -91,7 +91,7 @@
         {% if show_results %}
         <div class="home_results_div">
             <h3 class="home_stadistics_title">Resultados</h3>
-            <p style="text-align: center;">Se han registrado <strong>{{total_records}}</strong> atenciones{% if from_date %} desde el día {{ from_date }}{% endif %}{% if to_date %} hasta el día {{to_date}}{% endif %}{% if reason_id %}{% endif %}.</p>
+            <p style="text-align: center;">Se han registrado <strong>{{total_records}}</strong> atenciones{% if from_date %} desde el día {{ from_date }}{% endif %}{% if to_date %} hasta el día {{to_date}}{% endif %}{% if reason_id %}{% endif %}. {% if total_records != 0 %} <a href="{% url 'export_to_excel' %}?from_date={{ from_date }}&to_date={{ to_date }}&service_reason_id={{ reason_id }}&headquarter_id={{ headquarter_id }}">Exportar a Excel</a>. {% endif %}</p>
 
             <div class="table-responsive">
                 <table class="table table-striped">
@@ -150,8 +150,6 @@
                     {% endif %}
                 </ul>
             </nav>
-        
-            <button class="btn btn-secondary btn_export">Exportar</button>
         </div>
         {% else %}
         <p style="text-align: center;">Realiza una búsqueda para ver los resultados.</p>
