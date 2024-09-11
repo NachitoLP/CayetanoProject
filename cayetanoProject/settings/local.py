@@ -1,9 +1,9 @@
 from .base import *
 import os
 
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['cayetanoproject.onrender.com']
+ALLOWED_HOSTS = ['*']
 
 DATABASES = {
     'default': {
@@ -48,6 +48,8 @@ STATICFILES_DIRS = [
 ]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
