@@ -1,1 +1,1 @@
-gunicorn CayetanoProject.cayetanoProject.wsgi
+gunicorn cayetanoProject.wsgi
