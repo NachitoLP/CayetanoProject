@@ -1,0 +1,455 @@
+/* RESET */
+
+*{
+    font-family: "Nunito Sans", sans-serif;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.asterisk_required{
+    color: red; 
+    display: inline;
+}
+
+/* LOG IN */
+
+.body_login {
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.body_login .body_login_error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    padding: 15px;
+    position: absolute;
+    top: 0;
+    margin: 15px 0px;
+    font-size: 14px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.body_login .body_login_error p {
+    margin: 0;
+}
+
+.body_login .login_container {
+    margin: auto;
+    width: 100%;
+    height: 500px;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.29); /* Sombra ligera */
+}
+
+.body_login .login_container h2 {
+    text-align: center;
+    margin: 40px auto;
+    max-width: 170px;
+    display: block;
+    font-weight: 600;
+}
+
+.body_login .login_container .login_container_div_form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.body_login .login_container .login_container_div_form h3 {
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+.body_login .login_container .login_container_div_form .login_form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.body_login .login_container .login_container_div_form .login_form .login_form_input {
+    margin: auto;
+    margin-bottom: 20px;
+    width: 80%;
+    height: 40px;
+    border: 2px solid black;
+    border-radius: 7px;
+    text-align: center;
+}
+
+.body_login .login_container .login_container_div_form .login_form .login_form_submit {
+    margin: auto;
+    width: 35%;
+    height: 40px;
+    border: none;
+    border-radius: 40px;
+    background-color: rgb(30, 83, 243);
+    color: white;
+    font-weight: 700;
+}
+
+.footer_log_in {
+    width: 100%;
+    text-align: center;
+    background-color: #f1f1f1;
+    padding: 10px;
+    bottom: 0;
+    margin-bottom: 0;
+}
+
+.footer_log_in p {
+    margin: 0;
+}
+
+
+/* HOME */
+
+    /* NAVBAR */
+
+    .navbar {
+        background-color: #ddd;
+    }
+
+    .navbar-toggler {
+        border-radius: 50%;
+        background-color: #000000;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        width: 30px;
+        height: 30px;
+        border: none;
+    }
+
+    .navbar-toggler:focus {
+        outline: none;
+        box-shadow: none;
+    }
+    
+    .navbar-toggler-icon {
+        background-image: none;
+        font-size: 24px;
+        color: #fff;
+    }
+
+    #user_menu {
+        display: none;
+        position: absolute;
+        top: 50px;
+        right: 10px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+    }
+
+    #user_menu a {
+        display: block;
+        padding: 10px;
+        text-decoration: none;
+        color: #333;
+    }
+
+    #user_menu a:hover {
+        background-color: #f1f1f1;
+    }
+
+    #user_toggle_button {
+        border: none;
+        background-color: transparent;
+        font-size: 20px;
+        cursor: pointer;
+        position: absolute;
+        right: 10px;
+    }
+
+    @media(max-width:991px){
+        #user_toggle_button{
+            position: static;
+        }
+    }
+    
+    /* INICIO */
+
+    .home_buttons_div {
+        display: flex;
+        margin: 30px 0px;
+        flex-direction: column;
+        width: 100%;
+        align-items: center;
+    }
+
+    .home_buttons_div a {
+        margin: 7px;
+        width: 80%;
+    }
+
+    .home_register_button {
+        width: 100%;
+        height: 50px;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.868);
+    }
+
+    .attention_btn {
+        background-color: green;
+    }
+    .person_btn {
+        background-color: rgb(30, 83, 243);
+    }
+
+
+    /* ESTADÍSTICAS */
+
+    .home_stadistics_div{
+        width: 100%;
+        margin-top: 40px;
+    }
+
+    .home_stadistics_title{
+        margin: auto 0px 10px;
+        text-align: center;
+        font-weight: 700;
+    }
+
+    .btn_export{
+        background-color: green;
+    }
+
+    
+    /* RESULTADOS */
+
+    .home_results_div{
+        margin-top: 40px;
+        width: 100%;
+    }
+
+
+/* VIEW ATENCIONES Y PERSONAS */
+
+.attention_register_title {
+    text-align: center;
+    margin: 20px auto 0px;
+}
+
+.table {
+    width: 90%; /* Ajusta el ancho de la tabla según tus necesidades */
+    margin: 20px auto; /* Centra la tabla y añade un margen superior e inferior */
+    border-collapse: collapse; /* Elimina los espacios entre celdas */
+}
+
+.table th, .table td {
+    border: 1px solid #ddd; /* Bordes de las celdas */
+    padding: 8px; /* Espaciado dentro de las celdas */
+    text-align: center; /* Centra el texto dentro de las celdas */
+}
+
+.table th {
+    background-color: #f4f4f4; /* Fondo gris claro para el encabezado */
+    color: #333; /* Color del texto del encabezado */
+    font-weight: bold; /* Negrita para el encabezado */
+}
+
+.table tr:nth-child(even) {
+    background-color: #f9f9f9; /* Fondo gris claro para las filas pares */
+}
+
+.table tr:hover {
+    background-color: #f1f1f1; /* Color de fondo al pasar el ratón sobre la fila */
+}
+
+.table td[colspan] {
+    text-align: center; /* Centra el texto en las celdas que usan colspan */
+    font-style: italic; /* Estilo en cursiva para el texto */
+}
+
+.btn_register_new_attention{
+    width: 180px;
+    display: block;
+    margin: auto;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.868);
+}
+
+
+/* FORMULARIOS */
+
+.form-group{
+    margin:20px auto;
+    width: 90%;
+}
+
+.form-group label {
+    font-weight: 600;
+}
+
+.form-control{
+    margin: auto;
+}
+
+.btn_register__FORM {
+    display: block;
+    width: 150px;
+    margin: 20px auto 40px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.868);
+}
+
+.search_view_form{
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+}
+
+.search_view_attentions_form{
+    margin-bottom: 40px;
+}
+.search_attentions_buttons {
+    margin: auto;
+    text-align: center;
+}
+
+
+/* VISTA DE ATENCION Y PERSONA */
+
+.modify_title{
+    margin: 5px auto 10px;
+    text-align: center;
+}
+
+.go_back_arrow{
+    position: absolute;
+    margin: 21px 20px;
+    font-size: 20px;
+}
+
+.btn_modify_card{
+    background-color: transparent;
+    border:none;
+    position: absolute;
+    right: 8px;
+    top: 7px;
+    font-size: 20px;
+    color: #0d6efd;
+}
+
+.btn_close_overlay{
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    background: transparent;
+    color: red;
+    border: none;
+    font-size: 35px;
+    cursor: pointer;
+}
+
+.card {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 90%;
+    margin: 20px auto;
+    padding: 20px;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.card p {
+    margin: 0;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.card p:last-child {
+    border-bottom: none;
+}
+
+.overlay {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    padding: 20px 0px 50px;
+    z-index: 1000;
+}
+
+.overlay.active {
+    display: flex;
+}
+
+.overlay-content {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.overlay-content form {
+    display: flex;
+    flex-direction: column;
+}
+
+.overlay-content form label {
+    margin-bottom: 5px;
+}
+
+.overlay-content form input,
+.overlay-content form select,
+.overlay-content form textarea {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.overlay-content form button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.overlay-content form button:hover {
+    background-color: #0056b3;
+}
+
+.overlay-content .form-group{
+    margin: 5px auto;
+}
+
+.btn_register__FORM{
+    margin: 20px auto;
+}
+
+@media (max-width: 600px) {
+    .card {
+        padding: 15px;
+    }
+    .overlay-content {
+        width: 90%;
+    }
+}
