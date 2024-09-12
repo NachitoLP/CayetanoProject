@@ -11,6 +11,7 @@ import datetime
 class Headquarter(models.Model):
     headquarter_id = models.AutoField('ID Sede', primary_key=True)
     headquarter_name = models.CharField('Nombre Sede', max_length=100)
+    headquarter_address = models.CharField('Dirección', max_length=200, blank=True, null=True)
     
     class Meta:
         ordering = ['headquarter_name']
