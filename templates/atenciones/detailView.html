@@ -85,7 +85,10 @@
                     <select name="service_headquarter" id="service_headquarter" class="form-control" required>
                         <option value=""></option>
                         {% for headquarter in headquarters %}
-                            <option value="{{ headquarter.headquarter_id }}" {% if headquarter.headquarter_id == attention.service_headquarter_id_id %}selected{% endif %}>{{ headquarter.headquarter_name }}</option>
+                            <option value="{{ headquarter.headquarter_id }}" 
+                                {% if headquarter.headquarter_id == attention.service_headquarter_id %}selected{% endif %}>
+                                {{ headquarter.headquarter_name }}
+                            </option>
                         {% endfor %}
                     </select>
                 </div>

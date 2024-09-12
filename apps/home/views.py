@@ -106,6 +106,7 @@ class IndexView(LoginRequiredMixin, TemplateView):
 
         return context
 
+@login_required
 def export_to_excel(request):
     # Obtener parámetros de la solicitud para estadísticas
     from_date = request.GET.get('from_date', '')
