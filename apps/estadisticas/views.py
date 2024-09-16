@@ -23,7 +23,6 @@ def validate_date(date_str):
         raise ValidationError(f'Invalid date: {date_str}')
     return parsed_date
 
-# Lógica de filtrado separada para reutilización
 def filter_attentions(request):
     attentions = Service.objects.all()
     from_date = request.GET.get('from_date', '')
