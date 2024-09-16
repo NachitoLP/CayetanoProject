@@ -211,6 +211,9 @@
     .person_btn {
         background-color: rgb(30, 83, 243);
     }
+    .statistics_btn{
+        background-color: rgb(243, 30, 30);
+    }
 
 
     /* ESTADÍSTICAS */
@@ -228,6 +231,17 @@
 
     .btn_export{
         background-color: green;
+    }
+
+    .div_select_persons_age{
+        display: flex; 
+        align-items: flex-start; 
+    }
+
+    .select_age_input{
+        flex-basis: 150px;
+        margin: 0px 50px 0px 0px !important;
+        max-width: 300px !important;
     }
 
     

@@ -37,9 +37,14 @@
                         <li class="nav-item">
                             <a class="nav-link" href="view/persons">Personas</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item"></li>
+                            <a class="nav-link" href="/statistics">Estadísticas</a>
+                        </li>
+                        {% if user.is_superuser == True %}
+                        <li class="nav-item"></li>
                             <a class="nav-link" href="/admin">Administrador</a>
                         </li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
@@ -49,113 +54,10 @@
     <div class="home_buttons_div">
         <a href="/register/attention"><button class="home_register_button attention_btn">Registro de Atenciones</button></a>
         <a href="/register/person"><button class="home_register_button person_btn">Registro de Personas</button></a>
+        <a href="/statistics"><button class="home_register_button statistics_btn">Módulo de Estadísticas</button></a>
     </div>
 
-    <div class="home_stadistics_div" style="min-height: 575px;">
-        <h3 class="home_stadistics_title">Estadísticas</h3>
-        <form method="get" action="" class="form-group search_view_attentions_form">
-            <div class="div_padre_fecha_atenciones">
-                <div class="form-group">
-                    <label for="from_date">Fecha Desde:</label>
-                    <input type="date" id="from_date" name="from_date" value="{{ from_date }}" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="to_date">Fecha Hasta:</label>
-                    <input type="date" id="to_date" name="to_date" value="{{ to_date }}" class="form-control">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="service_reason_id">Motivo de atención:</label>
-                <select id="service_reason_id" name="service_reason_id" class="form-control">
-                    <option value="">--Seleccionar--</option>
-                    {% for reason in reasons %}
-                        <option value="{{ reason.service_reason_id }}">{{ reason.service_reason }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="headquarter_id">Sede de atención:</label>
-                <select id="headquarter_id" name="headquarter_id" class="form-control">
-                    <option value="">--Seleccionar--</option>
-                    {% for headquarter in headquarters %}
-                        <option value="{{ headquarter.headquarter_id }}">{{ headquarter.headquarter_name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="search_attentions_buttons">
-                <button type="submit" class="btn btn-primary" style="box-shadow: 0 2px 4px rgba(0, 0, 0, 0.34);">Buscar</button>
-                <a href="/" class="btn btn-secondary" style="box-shadow: 0 2px 4px rgba(0, 0, 0, 0.34);">Limpiar Filtros</a>
-            </div>
-        </form>
-        
-        {% if show_results %}
-        <div class="home_results_div">
-            <h3 class="home_stadistics_title">Resultados</h3>
-            <p style="text-align: center;">Se han registrado <strong>{{total_records}}</strong> atenciones{% if from_date %} desde el día {{ from_date }}{% endif %}{% if to_date %} hasta el día {{to_date}}{% endif %}{% if reason_id %}{% endif %}. {% if total_records != 0 %} <a href="{% url 'export_to_excel' %}?from_date={{ from_date }}&to_date={{ to_date }}&service_reason_id={{ reason_id }}&headquarter_id={{ headquarter_id }}">Exportar a Excel</a>. {% endif %}</p>
-
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Número</th>
-                            <th>Motivo</th>
-                            <th>Sede de atención</th>
-                            <th>Persona atendida</th>
-                            <th>Organismo</th>
-                            <th>Fecha de atención</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for attention in attentions %}
-                        <tr>
-                            <td><a href="/view/attentions/{{ attention.service_id }}" style="text-decoration: none;">{{ attention.service_id }}</a></td>
-                            <td>{{ attention.service_reason_id.service_reason }}</td>
-                            <td>{{ attention.service_headquarter.headquarter_name }}</td>
-                            <td>{{ attention.person_id.person_name }} {{ attention.person_id.person_surname }}</td>
-                            <td>{{ attention.organism_id|default:"N/A" }}</td>
-                            <td>{{ attention.service_date|date:"d/m/Y H:i" }}</td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="6">No hay atenciones registradas.</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-
-            <nav aria-label="Page navigation">
-                <ul class="pagination justify-content-center">
-                    {% if attentions.has_previous %}
-                        <li class="page-item">
-                            <a class="page-link" href="?{% if from_date %}from_date={{ from_date }}&{% endif %}{% if to_date %}to_date={{ to_date }}&{% endif %}{% if person_id %}person_id={{ person_id }}&{% endif %}{% if attention_id %}attention_id={{ attention_id }}&{% endif %}page={{ attentions.previous_page_number }}" aria-label="Previous">
-                                <i class="fas fa-chevron-left"></i> <!-- Icono de FontAwesome para flecha hacia la izquierda -->
-                            </a>
-                        </li>
-                    {% endif %}
-            
-                    <!-- Mostrar número de la página actual -->
-                    <li class="page-item disabled">
-                        <span class="page-link">
-                            Página {{ attentions.number }} de {{ attentions.paginator.num_pages }}
-                        </span>
-                    </li>
-            
-                    {% if attentions.has_next %}
-                        <li class="page-item">
-                            <a class="page-link" href="?{% if from_date %}from_date={{ from_date }}&{% endif %}{% if to_date %}to_date={{ to_date }}&{% endif %}{% if person_id %}person_id={{ person_id }}&{% endif %}{% if attention_id %}attention_id={{ attention_id }}&{% endif %}page={{ attentions.next_page_number }}" aria-label="Next">
-                                <i class="fas fa-chevron-right"></i> <!-- Icono de FontAwesome para flecha hacia la derecha -->
-                            </a>
-                        </li>
-                    {% endif %}
-                </ul>
-            </nav>
-        </div>
-        {% else %}
-        <p style="text-align: center;">Realiza una búsqueda para ver los resultados.</p>
-        {% endif %}
-    </div>
-    <footer class="footer_log_in" style="position: relative;">
+    <footer class="footer_log_in" style="position: absolute;">
         <p>Sistema elaborado por Tech Pro - 2024</p>
         <p><< Todos los derechos reservados >></p>
     </footer>

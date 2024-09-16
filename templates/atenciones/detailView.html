@@ -38,8 +38,13 @@
                             <a class="nav-link" href="/view/persons">Personas</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="/statistics">Estadísticas</a>
+                        </li>
+                        {% if user.is_superuser == True %}
+                        <li class="nav-item"></li>
                             <a class="nav-link" href="/admin">Administrador</a>
                         </li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
