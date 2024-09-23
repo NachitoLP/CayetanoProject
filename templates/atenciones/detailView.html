@@ -73,8 +73,12 @@
     </div>
     <div class="overlay" id="overlay">
         <div class="overlay-content">
-            <button id="close_overlay" class="btn_close_overlay">&times;</button>
-            <h2 class="modify_title">Editar Atención</h2>
+            <div class="overlay_title_div">
+                <h2 class="modify_title">Editar Atención</h2>
+                <div class="overlay_button_div">
+                    <button id="close_overlay" class="btn_close_overlay">&times;</button>
+                </div>
+            </div>
             <form method="POST" action="">
                 {% csrf_token %}
                 <div class="form-group">

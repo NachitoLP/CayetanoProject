@@ -260,35 +260,45 @@
     margin: 20px auto 0px;
 }
 
+.overlay_title_div{
+    display: flex;
+    justify-content: right;
+}
+
+.overlay_button_div{
+    position: absolute;
+    top: 25px;
+}
+
 .table {
-    width: 90%; /* Ajusta el ancho de la tabla según tus necesidades */
-    margin: 20px auto; /* Centra la tabla y añade un margen superior e inferior */
-    border-collapse: collapse; /* Elimina los espacios entre celdas */
+    width: 90%;
+    margin: 20px auto;
+    border-collapse: collapse;
 }
 
 .table th, .table td {
-    border: 1px solid #ddd; /* Bordes de las celdas */
-    padding: 8px; /* Espaciado dentro de las celdas */
-    text-align: center; /* Centra el texto dentro de las celdas */
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
 }
 
 .table th {
-    background-color: #f4f4f4; /* Fondo gris claro para el encabezado */
-    color: #333; /* Color del texto del encabezado */
-    font-weight: bold; /* Negrita para el encabezado */
+    background-color: #f4f4f4;
+    color: #333;
+    font-weight: bold;
 }
 
 .table tr:nth-child(even) {
-    background-color: #f9f9f9; /* Fondo gris claro para las filas pares */
+    background-color: #f9f9f9;
 }
 
 .table tr:hover {
-    background-color: #f1f1f1; /* Color de fondo al pasar el ratón sobre la fila */
+    background-color: #f1f1f1;
 }
 
 .table td[colspan] {
-    text-align: center; /* Centra el texto en las celdas que usan colspan */
-    font-style: italic; /* Estilo en cursiva para el texto */
+    text-align: center;
+    font-style: italic;
 }
 
 .btn_register_new_attention{
@@ -362,9 +372,6 @@
 }
 
 .btn_close_overlay{
-    position: absolute;
-    top: 15px;
-    right: 35px;
     background: transparent;
     color: red;
     border: none;
