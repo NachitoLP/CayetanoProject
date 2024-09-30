@@ -89,6 +89,16 @@
                 <label for="person_address">Dirección:</label>
                 <input type="text" name="person_address" id="person_address" class="form-control">
             </div>
+            
+            <div class="form-group">
+                <label for="locality_id">Localidad: <p class="asterisk_required">*</p></label>
+                <select name="locality_id" id="locality_id" class="form-control" required>
+                    <option value="">Seleccionar localidad</option>
+                    {% for locality in localities %}
+                        <option value="{{ locality.locality_id }}">{{ locality.locality_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
             <div class="form-group">
                 <label for="person_phone">Teléfono:</label>
@@ -103,16 +113,6 @@
             <div class="form-group">
                 <label for="person_observations">Observaciones:</label>
                 <textarea style="resize: none;" name="person_observations" id="person_observations" class="form-control"></textarea>
-            </div>
-
-            <div class="form-group">
-                <label for="locality_id">Localidad: <p class="asterisk_required">*</p></label>
-                <select name="locality_id" id="locality_id" class="form-control" required>
-                    <option value="">Seleccionar localidad</option>
-                    {% for locality in localities %}
-                        <option value="{{ locality.locality_id }}">{{ locality.locality_name }}</option>
-                    {% endfor %}
-                </select>
             </div>
 
             <button type="submit" class="btn btn-primary btn_register__FORM">Registrar</button>
