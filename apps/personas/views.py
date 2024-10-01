@@ -87,7 +87,7 @@ def viewPersons(request):
             ) #Se hace un filtrado tanto por DNI como por Apellido, y el __istartswith hace una búsqueda insensible a mayúsculas y minúsculas
         else:
             # Si no hay término de búsqueda, muestra todos los registros
-            people = Person.objects.all()
+            people = Person.objects.all().order_by('-created_at')
 
 
         paginator = Paginator(people, 5)  # Mostrar 5 personas por página

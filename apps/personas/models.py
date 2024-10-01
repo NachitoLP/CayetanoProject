@@ -39,6 +39,7 @@ class Person (models.Model) :
     person_bg_center = models.BooleanField('¿Pertenece al Centro de abuelos?')
     person_observations = models.TextField('Observaciones', blank=True)
     locality_id = models.ForeignKey(Locality, on_delete=models.CASCADE, verbose_name='Localidad')
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ['person_surname','person_name']

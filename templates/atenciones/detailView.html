@@ -91,7 +91,7 @@
 
                 <div class="form-group">
                     <label for="service_headquarter">Sede de atención</label>
-                    <select name="service_headquarter" id="service_headquarter" class="form-control" required>
+                    <select name="service_headquarter" id="service_headquarter" class="form-control select2" required>
                         <option value=""></option>
                         {% for headquarter in headquarters %}
                             <option value="{{ headquarter.headquarter_id }}" 
@@ -104,7 +104,7 @@
 
                 <div class="form-group">
                     <label for="service_reason_id">Motivo <p class="asterisk_required">*</p></label>
-                    <select name="service_reason_id" id="service_reason_id" class="form-control" required>
+                    <select name="service_reason_id" id="service_reason_id" class="form-control select2" required>
                         {% for reason in reasons %}
                             <option value="{{ reason.service_reason_id }}" 
                                 {% if reason.service_reason_id == attention.service_reason_id_id %}selected{% endif %}>
@@ -116,7 +116,7 @@
                 
                 <div class="form-group">
                     <label for="organism_id">Organismo</label>
-                    <select name="organism_id" id="organism_id" class="form-control">
+                    <select name="organism_id" id="organism_id" class="form-control select2">
                         <option value="">N/A</option>
                         {% for organism in organisms %}
                             <option value="{{ organism.organism_id }}" 
@@ -176,6 +176,16 @@
         });
     </script>
 
+    <script>
+        $(document).ready(function() {
+            $('.select2').select2({
+                placeholder: "Seleccionar una opción",
+                allowClear: true
+            });
+        });
+    </script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 </body>
 </html>
