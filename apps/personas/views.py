@@ -11,7 +11,7 @@ from .models import Person, Province, Locality
 from ..atenciones.models import Service, Reason
 from ..organismos.models import Organism
 
-import datetime
+from datetime import datetime, date
 
 @login_required
 def registerPerson(request):
@@ -31,7 +31,7 @@ def registerPerson(request):
         person_observations = request.POST.get('person_observations', '')
         locality_id = request.POST.get('locality_id')
         
-        if not all([person_dni, person_name, person_surname, person_birthdate_str, person_address, locality_id]):
+        if not all([person_dni, person_name, person_surname, person_birthdate_str, locality_id, person_phone]):
             return render(request, 'personas/register.html', {
                 "error": 'No se han completado todos los datos.',
                 'provinces': Province.objects.all(),
@@ -42,7 +42,7 @@ def registerPerson(request):
             person_birthdate = parse_date(person_birthdate_str)
             if not person_birthdate:
                 raise ValidationError('La fecha de nacimiento no es válida.')
-            if person_birthdate > datetime.date.today():
+            if person_birthdate > date.today():
                 return render(request, 'personas/register.html', {
                     "error": 'La Fecha de nacimiento no puede ser mayor a la fecha actual.',
                     'provinces': Province.objects.all(),
@@ -59,6 +59,7 @@ def registerPerson(request):
                 person_bg_center = person_bg_center,
                 person_observations = person_observations,
                 locality_id = Locality.objects.get(pk=locality_id),
+                created_at = datetime.now(),
             )
             new_person.save()
             

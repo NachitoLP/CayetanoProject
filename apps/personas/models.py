@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 from auditlog.registry import auditlog
 from datetime import date
 
@@ -30,16 +31,16 @@ class Locality (models.Model) :
         return self.locality_name
 
 class Person (models.Model) :
-    person_dni = models.IntegerField('DNI', primary_key=True, unique=True)
+    person_dni = models.BigIntegerField('DNI', primary_key=True, unique=True)
     person_name = models.CharField('Nombre' , max_length=50)
     person_surname = models.CharField('Apellido' , max_length=50)
     person_birthdate = models.DateField('Fecha de nacimiento')
-    person_address = models.CharField('Dirección', max_length=100)
+    person_address = models.CharField('Dirección', max_length=100, blank=True)
     person_phone = models.IntegerField('Teléfono')
     person_bg_center = models.BooleanField('¿Pertenece al Centro de abuelos?')
     person_observations = models.TextField('Observaciones', blank=True)
     locality_id = models.ForeignKey(Locality, on_delete=models.CASCADE, verbose_name='Localidad')
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField('Fecha de creación', default=timezone.now)
 
     class Meta:
         ordering = ['person_surname','person_name']
