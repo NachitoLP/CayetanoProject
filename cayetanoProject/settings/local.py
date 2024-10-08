@@ -1,5 +1,4 @@
 from .base import *
-import locale
 
 DEBUG = True
 
@@ -31,14 +30,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-locale.setlocale(locale.LC_TIME, 'es_AR.UTF-8')
+
 LANGUAGE_CODE = 'es-AR'
 
 USE_TZ = True
-USE_I18N = True
-
 TIME_ZONE = 'America/Argentina/Buenos_Aires'
 DATE_INPUT_FORMATS = ['%d/%m/%Y', '%Y-%m-%d']
+
+USE_I18N = True
 
 STATIC_URL = '/static/'
 
