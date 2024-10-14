@@ -32,7 +32,7 @@ def registerAttention(request, person_dni=None):
         organism_id = request.POST.get('organism_id')
         service_headquarter = request.POST.get('service_headquarter')
 
-        if not service_reason_id or not person_id or not service_description:
+        if not service_reason_id or not person_id or not service_description or not service_headquarter:
             return render(request, 'atenciones/register.html', {
                 "error": 'No se han completado todos los datos.',
                 'reasons': Reason.objects.all(),
