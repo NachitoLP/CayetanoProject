@@ -82,6 +82,7 @@
                 <label for="person_id">Persona Atendida <p class="asterisk_required">*</p></label>
                 <select name="person_id" id="person_id" class="form-control select2" required>
                     <option value=""></option>
+                    <option value=""><a href="">Registrar persona</a></option>
                     {% for person in people %}
                         <option value="{{ person.person_dni }}" {% if personNewAttention %} {% if person.person_dni == personNewAttention.person_dni %}selected {% endif %} {% endif %}>{{ person.person_surname }} {{ person.person_name }} - {{ person.person_dni }}</option>
                     {% endfor %}

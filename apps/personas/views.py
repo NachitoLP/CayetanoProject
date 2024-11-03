@@ -161,7 +161,7 @@ def viewPersonDetail(request, person_dni):
             
             if not person_birthdate:
                 raise ValidationError('La fecha de nacimiento no es válida.')
-            if person_birthdate > datetime.date.today():
+            if person_birthdate > date.today():
                 return render(request, 'personas/detailView.html', {
                     "error": 'La Fecha de nacimiento no puede ser mayor a la fecha actual.',
                     "person": person,
