@@ -4,7 +4,7 @@ from auditlog.registry import auditlog
 class Organism(models.Model):
     organism_id = models.AutoField('ID Organismo', primary_key=True)
     organism_name = models.CharField('Nombre del Organismo', max_length=50)
-    organism_description = models.TextField('Descripción', blank=True)
+    organism_description = models.TextField('Descripción', blank=True, null= True)
     
     class Meta:
         ordering = ['organism_name']
