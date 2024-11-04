@@ -138,10 +138,10 @@ def export_to_excel(request):
     worksheet.title = 'Atenciones'
 
     # Escribir encabezados
-    headers = ['ID', 'Motivo del Servicio', 'Sede de Atención', 'Persona Atendida', 'Organismo', 'Fecha del Servicio']
+    headers = ['ID', 'Motivo del Servicio', 'Sede de Atención', 'Persona Atendida', 'Edad' ,'Organismo', 'Fecha del Servicio']
     worksheet.append(headers)
     
-    column_widths = [10, 30, 30, 30, 30, 40]
+    column_widths = [10, 30, 30, 30, 20, 40, 40]
     for i, width in enumerate(column_widths, start=1):
         worksheet.column_dimensions[openpyxl.utils.get_column_letter(i)].width = width
 
@@ -155,11 +155,15 @@ def export_to_excel(request):
     # Escribir datos
     for attention in attentions.select_related('service_reason_id', 'person_id', 'organism_id', 'service_headquarter'):
         service_date = make_naive(attention.service_date) if attention.service_date else ''
+        person = attention.person_id
+        age = person.age()  # Calcular la edad usando el método age() del modelo Person
+        
         worksheet.append([
             attention.service_id,
             attention.service_reason_id.service_reason,
             attention.service_headquarter.headquarter_name,
-            f"{attention.person_id.person_surname} {attention.person_id.person_name}",
+            f"{person.person_surname} {person.person_name}",
+            age,  # Aquí agregamos la edad
             attention.organism_id.organism_name if attention.organism_id else 'N/A',
             service_date.strftime('%d-%m-%Y %H:%M:%S') if service_date else '',
         ])
