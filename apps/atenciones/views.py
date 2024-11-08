@@ -6,9 +6,17 @@ from django.core.exceptions import ValidationError
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+from datetime import datetime
 from .models import Reason, Service, Headquarter
 from ..personas.models import Person
 from ..organismos.models import Organism
+
+def validate_date(date_str):
+    try:
+        parsed_date = datetime.strptime(date_str, '%d/%m/%Y').date()
+    except ValueError:
+        raise ValidationError(f'Invalid date: {date_str}')
+    return parsed_date
 
 @login_required
 def registerAttention(request, person_dni=None):
@@ -87,6 +95,12 @@ def viewAttentions(request):
 
     try:
         attentions = Service.objects.all()
+        
+        # Validación de fechas
+        if from_date:
+            from_date = validate_date(from_date)
+        if to_date:
+            to_date = validate_date(to_date)
         
         # Filtrar por rango de fechas
         if from_date and to_date:

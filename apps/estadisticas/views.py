@@ -1,4 +1,4 @@
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 from django.db.models import F
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -18,8 +18,9 @@ from .. organismos.models import Organism
 
 # Validación de fechas
 def validate_date(date_str):
-    parsed_date = parse_date(date_str)
-    if not parsed_date:
+    try:
+        parsed_date = datetime.strptime(date_str, '%d/%m/%Y').date()
+    except ValueError:
         raise ValidationError(f'Invalid date: {date_str}')
     return parsed_date
 

@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from django.utils.dateparse import parse_date
 from django.db.models import Q
+from django.db import IntegrityError
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import Person, Province, Locality
@@ -12,6 +13,17 @@ from ..atenciones.models import Service, Reason
 from ..organismos.models import Organism
 
 from datetime import datetime, date
+
+def validate_birthdate(person_birthdate_str):
+    try:
+        person_birthdate = datetime.strptime(person_birthdate_str, '%d/%m/%Y').date()
+    except ValueError:
+        raise ValidationError('La fecha de nacimiento no es válida.')
+
+    if person_birthdate > date.today():
+        raise ValidationError('La fecha de nacimiento no puede ser mayor a la fecha actual.')
+
+    return person_birthdate
 
 @login_required
 def registerPerson(request):
@@ -37,16 +49,24 @@ def registerPerson(request):
                 'provinces': Province.objects.all(),
                 'localities': Locality.objects.all(),
             })
-        
+            
+        #DNI YA REGISTRADO
+        if Person.objects.filter(person_dni=person_dni).exists():
+            return render(request, 'personas/register.html', {
+                'error': 'El DNI ya está registrado.',
+                'provinces': Province.objects.all(),
+                'localities': Locality.objects.all(),
+            })
         try:
-            person_birthdate = parse_date(person_birthdate_str)
-            if not person_birthdate:
-                raise ValidationError('La fecha de nacimiento no es válida.')
-            if person_birthdate > date.today():
-                return render(request, 'personas/register.html', {
-                    "error": 'La Fecha de nacimiento no puede ser mayor a la fecha actual.',
-                    'provinces': Province.objects.all(),
-                    'localities': Locality.objects.all(),
+            if person_birthdate_str:
+                try:
+                    # Validamos la fecha de nacimiento
+                    person_birthdate = validate_birthdate(person_birthdate_str)
+                except ValidationError as e:
+                    return render(request, 'personas/register.html', {
+                        'error': str(e),  # El mensaje de error personalizado
+                        'provinces': Province.objects.all(),
+                        'localities': Locality.objects.all(),
                 })
             
             new_person = Person(
@@ -73,6 +93,12 @@ def registerPerson(request):
         except ValidationError as e:
             return render(request, 'personas/register.html', {
                 "error": str(e),
+                'provinces': Province.objects.all(),
+                'localities': Locality.objects.all(),
+            })
+        except IntegrityError:
+            return render(request, 'personas/register.html', {
+                'error': 'Hubo un error al guardar la persona. Intenta de nuevo.',
                 'provinces': Province.objects.all(),
                 'localities': Locality.objects.all(),
             })
@@ -114,28 +140,22 @@ def viewPersons(request):
 
 @login_required
 def viewPersonDetail(request, person_dni):
-    # Obtener la persona específica o devolver un 404 si no se encuentra.
+    # Obtener la persona a partir del DNI.
     person = get_object_or_404(Person, pk=person_dni)
-    
-    # Obtener sus atenciones relacionadas.
     attentions = Service.objects.filter(person_id=person_dni)
-    
-    paginator = Paginator(attentions, 5)  # Mostrar 2 atenciones por página
-    page = request.GET.get('page')  # Obtener el número de página de los parámetros de la solicitud
+    paginator = Paginator(attentions, 5)
+    page = request.GET.get('page')
 
     try:
         attentions = paginator.page(page)
     except PageNotAnInteger:
-        # Si la página no es un entero, muestra la primera página
         attentions = paginator.page(1)
     except EmptyPage:
-        # Si la página está fuera del rango, muestra la última página de resultados
         attentions = paginator.page(paginator.num_pages)
     
-    # Si se modifican los datos, va a recibir un método POST.
     if request.method == 'POST':
-        # Obtener los datos del formulario que puedan modificarse
-        person_dni = request.POST.get('person_dni')
+        # Obtener los datos del formulario
+        new_person_dni = request.POST.get('person_dni')
         person_name = request.POST.get('person_name')
         person_surname = request.POST.get('person_surname')
         person_birthdate_str = request.POST.get('person_birthdate')
@@ -145,7 +165,7 @@ def viewPersonDetail(request, person_dni):
         person_observations = request.POST.get('person_observations', '')
         locality_id = request.POST.get('locality_id')
         
-        if not all([person_dni, person_name, person_surname, person_birthdate_str, locality_id]):
+        if not all([new_person_dni, person_name, person_surname, person_birthdate_str, locality_id]):
             return render(request, 'personas/detailView.html', {
                 "error": 'No se han completado todos los datos.',
                 "person": person,
@@ -153,25 +173,32 @@ def viewPersonDetail(request, person_dni):
                 'provinces': Province.objects.all(),
                 'localities': Locality.objects.all(),
             })
-        
-        try:
-            person_birthdate = parse_date(person_birthdate_str)
-            
-            
-            
-            if not person_birthdate:
-                raise ValidationError('La fecha de nacimiento no es válida.')
-            if person_birthdate > date.today():
+
+        # Si el DNI ha cambiado, verificamos si ya existe en la base de datos
+        if new_person_dni != str(person.person_dni):
+            if Person.objects.filter(person_dni=new_person_dni).exists():
                 return render(request, 'personas/detailView.html', {
-                    "error": 'La Fecha de nacimiento no puede ser mayor a la fecha actual.',
+                    "error": 'El DNI ya está registrado.',
                     "person": person,
                     "attentions": attentions,
                     'provinces': Province.objects.all(),
                     'localities': Locality.objects.all(),
                 })
-                
-            # Actualizar la persona con los datos del formulario
-            person.person_dni = person_dni
+
+        try:
+            if person_birthdate_str:
+                try:
+                    # Validamos la fecha de nacimiento
+                    person_birthdate = validate_birthdate(person_birthdate_str)
+                except ValidationError as e:
+                    return render(request, 'personas/register.html', {
+                        'error': str(e),  # El mensaje de error personalizado
+                        'provinces': Province.objects.all(),
+                        'localities': Locality.objects.all(),
+                    })
+
+            # Si todo está bien, actualizar los datos
+            person.person_dni = new_person_dni  # Solo actualizar si el DNI ha cambiado
             person.person_name = person_name
             person.person_surname = person_surname
             person.person_birthdate = person_birthdate
@@ -180,10 +207,10 @@ def viewPersonDetail(request, person_dni):
             person.person_bg_center = person_bg_center
             person.person_observations = person_observations
             person.locality_id = Locality.objects.get(pk=locality_id)
-            
+
             person.save()
 
-            return redirect('viewPersonDetail', person_dni=person.person_dni)  # Redirigir para evitar reposteo
+            return redirect('viewPersonDetail', person_dni=person.person_dni)
     
         except ValidationError as e:
             return render(request, 'personas/detailView.html', {
@@ -193,7 +220,6 @@ def viewPersonDetail(request, person_dni):
                 'provinces': Province.objects.all(),
                 'localities': Locality.objects.all(),
             })
-    
     return render(request, 'personas/detailView.html', {
         "person": person,
         "attentions": attentions,
