@@ -7,11 +7,14 @@ ALLOWED_HOSTS = ['*']
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'cayetano_free_db',
+        'NAME': os.getenv('DB_NAME'),
         'USER': os.getenv('DB_USER'),
         'PASSWORD': os.getenv('DB_PASSWORD'),
         'HOST': os.getenv('DB_HOST', 'localhost'),
-        'PORT': '5432'
+        'PORT': '5432',
+        'OPTIONS': {
+            'sslmode': 'disable',  # Desactiva SSL si no lo necesitas
+        },
     }
 }
 
