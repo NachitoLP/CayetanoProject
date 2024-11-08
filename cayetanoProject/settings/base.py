@@ -1,10 +1,16 @@
 from pathlib import Path
 import json
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 SECRET_KEY = os.getenv("SECRET_KEY");
+
+if SECRET_KEY is None:
+    raise ValueError("El valor de SECRET_KEY no se ha cargado correctamente desde el archivo .env")
 
 LOGIN_URL = os.getenv("LOGIN_URL");
 

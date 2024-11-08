@@ -1,6 +1,8 @@
 from .base import *
 
-DEBUG = True
+load_dotenv()
+
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
