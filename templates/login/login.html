@@ -15,24 +15,29 @@
     <link rel="icon" href="{% static 'images/logo.jpg' %}" type="image/jpg">
     <title>Casa Social</title>
 </head>
-<body class="body_login">
+<body>
 
     {% if error %}
         <div class="body_login_error">
             <p><strong>{{error}}</strong></p>
         </div>
     {% endif %}
-    
-    <div class="login_container">
-        <h2>Casa Social</h2>
-        <div class="login_container_div_form">
-            <h3>Iniciar Sesión</h3>
-            <form action="/sign-in/" method="POST" class="login_form">
-                {% csrf_token %}
-                <input class="login_form_input" type="text" name="username" placeholder="Nombre de usuario" required/>
-                <input class="login_form_input" type="password" name="password" placeholder="Contraseña" required/>
-                <button class="login_form_submit" type="submit">Ingresar</button>
-            </form>
+
+    <div class="banner">
+        <img src="{% static 'images/Parroquia.jpeg' %}" alt="Banner de la Parroquia">
+    </div>
+
+    <div class="body_login">
+        <div class="login_container">
+            <div class="login_container_div_form">
+                <h3>Iniciar Sesión</h3>
+                <form action="/sign-in/" method="POST" class="login_form">
+                    {% csrf_token %}
+                    <input class="login_form_input" type="text" name="username" placeholder="Nombre de usuario" required/>
+                    <input class="login_form_input" type="password" name="password" placeholder="Contraseña" required/>
+                    <button class="login_form_submit" type="submit">Ingresar</button>
+                </form>
+            </div>
         </div>
     </div>
 

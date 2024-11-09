@@ -47,7 +47,7 @@
     height: 500px;
     background-color: #fff;
     padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.29); /* Sombra ligera */
+    /*box-shadow: 0 2px 4px rgba(0, 0, 0, 0.29); /* Sombra ligera */
 }
 
 .body_login .login_container h2 {
