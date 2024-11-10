@@ -21,14 +21,13 @@
     <div class="banner">
         <img src="{% static 'images/Parroquia.jpeg' %}" alt="Banner de la Parroquia">
     </div>
-    
-    {% if error %}
-        <div class="body_login_error">
-            <p><strong>{{error}}</strong></p>
-        </div>
-    {% endif %}
 
     <div class="body_login">
+        {% if error %}
+            <div class="body_login_error">
+                <p><strong>{{error}}</strong></p>
+            </div>
+        {% endif %}
         <div class="login_container">
             <div class="login_container_div_form">
                 <h3>Iniciar Sesión</h3>
