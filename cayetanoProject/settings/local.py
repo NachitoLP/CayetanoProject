@@ -2,7 +2,7 @@ from .base import *
 
 load_dotenv()
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
