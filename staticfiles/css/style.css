@@ -38,7 +38,7 @@
 }
 
 .body_login {
-    min-height:100vh;
+    min-height:500px;
     margin: 0;
     display: flex;
     flex-direction: column;
@@ -47,21 +47,23 @@
     position: relative;
 }
 
-.body_login .body_login_error {
+.body_login_error {
     background-color: #f8d7da;
     color: #721c24;
     border: 1px solid #f5c6cb;
     border-radius: 5px;
     padding: 15px;
-    position: absolute;
+    position: relative;
     top: 0;
-    margin: 15px 0px;
+    min-width: 300px;
+    max-width: 60%;
+    margin: 15px auto;
     font-size: 14px;
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.body_login .body_login_error p {
+.body_login_error p {
     margin: 0;
 }
 
@@ -138,6 +140,14 @@
     padding: 10px;
     bottom: 0;
     margin-bottom: 0;
+}
+@media(min-width: 1200px){
+    .footer_log_in{
+        position: relative;
+    }
+    .body_login {
+        justify-content: flex-start !important;
+    }
 }
 
 .footer_log_in p {

@@ -17,15 +17,16 @@
 </head>
 <body>
 
+    
+    <div class="banner">
+        <img src="{% static 'images/Parroquia.jpeg' %}" alt="Banner de la Parroquia">
+    </div>
+    
     {% if error %}
         <div class="body_login_error">
             <p><strong>{{error}}</strong></p>
         </div>
     {% endif %}
-
-    <div class="banner">
-        <img src="{% static 'images/Parroquia.jpeg' %}" alt="Banner de la Parroquia">
-    </div>
 
     <div class="body_login">
         <div class="login_container">
@@ -41,7 +42,7 @@
         </div>
     </div>
 
-    <footer class="footer_log_in">
+    <footer class="footer_log_in" style="position: absolute;">
         <p>Sistema elaborado por Tech Pro - 2024</p>
         <p><< Todos los derechos reservados >></p>
     </footer>
