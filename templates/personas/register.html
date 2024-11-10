@@ -91,8 +91,10 @@
             </div>
             <script>
                 flatpickr("#person_birthdate", {
-                    dateFormat: "d/m/Y",
-                    locale: "es"
+                    dateFormat: "Y-m-d",  // Este es el formato que se usa internamente para el valor del input
+                    locale: "es",         // Localización en español
+                    altInput: true,       // Activamos el campo alternativo para mostrar la fecha en un formato diferente
+                    altFormat: "d/m/Y",   // Formato alternativo visual de la fecha
                 });
             </script>
 
