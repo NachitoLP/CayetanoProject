@@ -142,7 +142,7 @@
     margin-bottom: 0;
 }
 @media(min-width: 1200px){
-    .footer_log_in{
+    .login_footer_position{
         position: relative !important;
     }
     .body_login {
