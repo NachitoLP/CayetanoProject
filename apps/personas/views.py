@@ -4,6 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from django.utils.dateparse import parse_date
+from django.utils import timezone
 from django.db.models import Q
 from django.db import IntegrityError
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -80,7 +81,7 @@ def registerPerson(request):
                 person_bg_center = person_bg_center,
                 person_observations = person_observations,
                 locality_id = Locality.objects.get(pk=locality_id),
-                created_at = datetime.now(),
+                created_at = timezone.now(),
             )
             new_person.save()
             
