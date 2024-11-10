@@ -30,7 +30,7 @@ def sessionLogIn(request):
                 })
             else:
                 login(request, user)
-                return redirect(os.getenv('SERVER_DNS') or 'http://127.0.0.1:8000/')
+                return redirect('http://127.0.0.1:8000/')#(os.getenv('SERVER_DNS') or 'http://127.0.0.1:8000/')
 
 
 def sessionLogOut(request) :

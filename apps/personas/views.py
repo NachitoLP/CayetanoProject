@@ -16,7 +16,8 @@ from datetime import datetime, date
 
 def validate_birthdate(person_birthdate_str):
     try:
-        person_birthdate = datetime.strptime(person_birthdate_str, '%d/%m/%Y').date()
+        # Cambiar el formato a '%Y-%m-%d' para analizar correctamente la fecha.
+        person_birthdate = datetime.strptime(person_birthdate_str, '%Y-%m-%d').date()
     except ValueError:
         raise ValidationError('La fecha de nacimiento no es válida.')
 
@@ -189,6 +190,7 @@ def viewPersonDetail(request, person_dni):
             if person_birthdate_str:
                 try:
                     # Validamos la fecha de nacimiento
+                    print(person_birthdate_str)
                     person_birthdate = validate_birthdate(person_birthdate_str)
                 except ValidationError as e:
                     return render(request, 'personas/register.html', {

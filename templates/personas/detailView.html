@@ -104,14 +104,19 @@
 
                 <div class="form-group">
                     <label for="person_birthdate">Fecha de Nacimiento: <p class="asterisk_required">*</p></label>
-                    <input type="date" name="person_birthdate" id="person_birthdate" class="form-control" required value="{% if person.person_birthdate %}{{ person.person_birthdate|date:"Y-m-d" }}{% endif %}">
+                    <input type="date" name="person_birthdate" id="person_birthdate" class="form-control" required value="{% if person.person_birthdate %}{{ person.person_birthdate|date:'Y-m-d' }}{% endif %}">
                 </div>
+                
                 <script>
                     flatpickr("#person_birthdate", {
-                        dateFormat: "d/m/Y",
-                        locale: "es"
+                        dateFormat: "Y-m-d",  // Este es el formato que se usa internamente para el valor del input
+                        locale: "es",         // Localización en español
+                        altInput: true,       // Activamos el campo alternativo para mostrar la fecha en un formato diferente
+                        altFormat: "d/m/Y",   // Formato alternativo visual de la fecha
+                        defaultDate: "{{ person.person_birthdate|date:'Y-m-d' }}" // Inicializamos flatpickr con la fecha correcta
                     });
                 </script>
+                
                 
                 <div class="form-group">
                     <label for="person_address">Dirección:</label>
