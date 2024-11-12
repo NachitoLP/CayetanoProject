@@ -85,7 +85,7 @@ def registerPerson(request):
             )
             new_person.save()
             
-            return redirect('/view/persons')
+            return redirect(f'/view/persons/{new_person.person_dni}')
         except Locality.DoesNotExist:
             return render(request, 'personas/register.html', {
                 "error": 'Localidad no válida.',

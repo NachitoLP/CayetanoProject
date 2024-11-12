@@ -6,6 +6,7 @@ from django.core.exceptions import ValidationError
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+import os
 from datetime import datetime
 from .models import Reason, Service, Headquarter
 from ..personas.models import Person
@@ -64,7 +65,7 @@ def registerAttention(request, person_dni=None):
             )
             new_service.save()
 
-            return redirect('/view/attentions')
+            return redirect(os.getenv('SERVER_DNS')) #('/view/attentions')
 
         except (Reason.DoesNotExist, Person.DoesNotExist) as e:
             return render(request, 'atenciones/register.html', {
