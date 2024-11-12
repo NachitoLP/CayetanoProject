@@ -20,7 +20,7 @@
     <link rel="icon" href="{% static 'images/logo.jpg' %}" type="image/jpg">
     <title>Casa Social</title>
 </head>
-<body class="body_home">
+<body class="body_home" onload="updateAgeFields()">
     <header class="body_header">
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid">
@@ -76,7 +76,7 @@
                 <select id="organism_id" name="organism_id" class="form-control select2">
                     <option value="">--Seleccionar--</option>
                     {% for organism in organisms %}
-                        <option value="{{ organism.organism_id }}">{{ organism.organism_name }}</option>
+                        <option value="{{ organism.organism_id }}" {% if organism.organism_id == selected_organism.organism_id %}selected{% endif %}>{{ organism.organism_name }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -85,7 +85,7 @@
                 <select id="service_reason_id" name="service_reason_id" class="form-control select2">
                     <option value="">--Seleccionar--</option>
                     {% for reason in reasons %}
-                        <option value="{{ reason.service_reason_id }}">{{ reason.service_reason }}</option>
+                        <option value="{{ reason.service_reason_id }}" {% if reason.service_reason_id == selected_reason.service_reason_id %}selected{% endif %}>{{ reason.service_reason }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -94,7 +94,7 @@
                 <select id="headquarter_id" name="headquarter_id" class="form-control select2">
                     <option value="">--Seleccionar--</option>
                     {% for headquarter in headquarters %}
-                        <option value="{{ headquarter.headquarter_id }}">{{ headquarter.headquarter_name }}</option>
+                        <option value="{{ headquarter.headquarter_id }}" {% if headquarter.headquarter_id == selected_headquarter.headquarter_id %}selected{% endif %}>{{ headquarter.headquarter_name }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -102,19 +102,23 @@
                 <label for="age">Edad de la persona:</label>
                 <div class="div_select_persons_age">
                     <select id="age" name="age" class="form-control select_age_input" onchange="updateAgeFields()">
-                        <option value="" style="text-align: center;">--Seleccionar--</option>
-                        <option value="equals">Igual a</option>
-                        <option value="min">Desde</option>
-                        <option value="max">Hasta</option>
-                        <option value="range">Rango</option>
+                        <option value="" style="text-align: center;" {% if not age %}selected{% endif %}>--Seleccionar--</option>
+                        <option value="equals" {% if age == 'equals' %}selected{% endif %}>Igual a</option>
+                        <option value="min" {% if age == 'min' %}selected{% endif %}>Desde</option>
+                        <option value="max" {% if age == 'max' %}selected{% endif %}>Hasta</option>
+                        <option value="range" {% if age == 'range' %}selected{% endif %}>Rango</option>
                     </select>
-                    <div id="age-inputs" style="display: none;">
-                        <input type="number" name="min_age" id="min_age" class="form-control" placeholder="Desde" style="display: none;margin-bottom: 10px;">
-                        <input type="number" name="max_age" id="max_age" class="form-control" placeholder="Hasta" style="display: none;margin-bottom: 10px;">
-                        <input type="number" name="persons_age" id="persons_age" class="form-control" placeholder="Edad" style="display: none;margin-bottom: 10px;">
+                    {% if age %}
+                        <div id="age-inputs" style="display:block;">
+                    {% else %}
+                        <div id="age-inputs" style="display:none;">
+                    {% endif %}
+                        <input type="number" name="min_age" id="min_age" class="form-control" placeholder="Desde" value="{{ min_age }}" style="margin-bottom: 10px;">
+                        <input type="number" name="max_age" id="max_age" class="form-control" placeholder="Hasta" value="{{ max_age }}" style="margin-bottom: 10px;">
+                        <input type="number" name="persons_age" id="persons_age" class="form-control" placeholder="Edad" value="{{ persons_age }}" style="margin-bottom: 10px;">
                     </div>
                 </div>
-            </div>
+            </div>            
             <div class="search_attentions_buttons">
                 <input type="hidden" name="search" value="true">
                 <button type="submit" class="btn btn-primary" style="box-shadow: 0 2px 4px rgba(0, 0, 0, 0.34);">Buscar</button>
@@ -125,7 +129,29 @@
         {% if show_results %}
         <div class="home_results_div">
             <h3 class="home_stadistics_title">Resultados</h3>
-            <p style="text-align: center;">Se han registrado <strong>{{total_records}}</strong> atenciones{% if from_date %} desde el día {{ from_date }}{% endif %}{% if to_date %} hasta el día {{to_date}}{% endif %}{% if reason_id %}{% endif %}. {% if total_records != 0 %} <a href="{% url 'export_to_excel' %}?from_date={{ from_date }}&to_date={{ to_date }}&service_reason_id={{ reason_id }}&headquarter_id={{ headquarter_id }}">Exportar a Excel</a>. {% endif %}</p>
+            <p style="text-align: center; max-width: 1000px; margin: auto;">
+                Se han registrado <strong>{{ total_records }}</strong> atenciones
+                {% if from_date %} desde el día {{ from_date }}{% endif %}
+                {% if to_date %} hasta el día {{ to_date }}{% endif %}
+            
+                {% if selected_organism %}
+                    por el organismo "<strong>{{ selected_organism }}</strong>"
+                {% endif %}
+
+                {% if selected_reason %}
+                    con el motivo "<strong>{{ selected_reason }}</strong>"
+                {% endif %}
+            
+                {% if selected_headquarter %} 
+                    en la sede "<strong>{{ selected_headquarter }}</strong>"
+                {% endif %}.
+                
+                {% if total_records != 0 %}
+                    <a href="{% url 'export_to_excel' %}?from_date={{ from_date }}&to_date={{ to_date }}&service_reason_id={{ service_reason_id }}&headquarter_id={{ headquarter_id }}">
+                        Exportar a Excel
+                    </a>.
+                {% endif %}
+            </p>
             
             <div class="table-responsive">
                 <table class="table table-striped">
@@ -162,22 +188,22 @@
                 <ul class="pagination justify-content-center">
                     {% if attentions.has_previous %}
                         <li class="page-item">
-                            <a class="page-link" href="?{% if from_date %}from_date={{ from_date }}&{% endif %}{% if to_date %}to_date={{ to_date }}&{% endif %}{% if person_id %}person_id={{ person_id }}&{% endif %}{% if attention_id %}attention_id={{ attention_id }}&{% endif %}page={{ attentions.previous_page_number }}" aria-label="Previous">
+                            <a class="page-link" href="?page={{ attentions.previous_page_number }}{% if from_date %}&from_date={{ from_date }}{% endif %}{% if to_date %}&to_date={{ to_date }}{% endif %}{% if organism_id %}&organism_id={{ organism_id }}{% endif %}{% if service_reason_id %}&service_reason_id={{ service_reason_id }}{% endif %}{% if headquarter_id %}&headquarter_id={{ headquarter_id }}{% endif %}{% if age %}&age={{ age }}{% endif %}{% if min_age %}&min_age={{ min_age }}{% endif %}{% if max_age %}&max_age={{ max_age }}{% endif %}{% if persons_age %}&persons_age={{ persons_age }}{% endif %}&search=true" aria-label="Previous">
                                 <i class="fas fa-chevron-left"></i> <!-- Icono de FontAwesome para flecha hacia la izquierda -->
                             </a>
                         </li>
                     {% endif %}
-            
+                
                     <!-- Mostrar número de la página actual -->
                     <li class="page-item disabled">
                         <span class="page-link">
                             Página {{ attentions.number }} de {{ attentions.paginator.num_pages }}
                         </span>
                     </li>
-            
+                
                     {% if attentions.has_next %}
                         <li class="page-item">
-                            <a class="page-link" href="?{% if from_date %}from_date={{ from_date }}&{% endif %}{% if to_date %}to_date={{ to_date }}&{% endif %}{% if person_id %}person_id={{ person_id }}&{% endif %}{% if attention_id %}attention_id={{ attention_id }}&{% endif %}page={{ attentions.next_page_number }}" aria-label="Next">
+                            <a class="page-link" href="?page={{ attentions.next_page_number }}{% if from_date %}&from_date={{ from_date }}{% endif %}{% if to_date %}&to_date={{ to_date }}{% endif %}{% if organism_id %}&organism_id={{ organism_id }}{% endif %}{% if service_reason_id %}&service_reason_id={{ service_reason_id }}{% endif %}{% if headquarter_id %}&headquarter_id={{ headquarter_id }}{% endif %}{% if age %}&age={{ age }}{% endif %}{% if min_age %}&min_age={{ min_age }}{% endif %}{% if max_age %}&max_age={{ max_age }}{% endif %}{% if persons_age %}&persons_age={{ persons_age }}{% endif %}&search=true" aria-label="Next">
                                 <i class="fas fa-chevron-right"></i> <!-- Icono de FontAwesome para flecha hacia la derecha -->
                             </a>
                         </li>
@@ -240,26 +266,49 @@
             maxAgeInput.style.display = 'none';
             personsAgeInput.style.display = 'none';
 
-            // Muestra campos de entrada basados en la opción seleccionada
+            // Limpia los campos anteriores si la opción de edad cambia
             if (selectedValue === 'range') {
+                // Si el rango está seleccionado, mostrar todos los campos
                 ageInputs.style.display = 'block';
                 minAgeInput.style.display = 'block';
                 maxAgeInput.style.display = 'block';
             }
             else if (selectedValue === 'min'){
+                // Si "Desde" está seleccionado, mostrar solo el campo "Desde"
                 ageInputs.style.display = 'block';
                 minAgeInput.style.display = 'block';
             }
             else if (selectedValue === 'max'){
+                // Si "Hasta" está seleccionado, mostrar solo el campo "Hasta"
                 ageInputs.style.display = 'block';
                 maxAgeInput.style.display = 'block';
             }
             else if (selectedValue === 'equals') {
+                // Si "Igual a" está seleccionado, mostrar solo el campo de "Edad exacta"
                 ageInputs.style.display = 'block';
                 personsAgeInput.style.display = 'block';
             }
+            else {
+                // Si no se ha seleccionado una opción, ocultar todos los campos de edad
+                ageInputs.style.display = 'none';
+            }
+
+            // Limpiar los valores previos de los campos que ya no se usan
+            if (selectedValue !== 'max' && selectedValue !== 'range') {
+                maxAgeInput.value = ''; // Limpiar "Hasta" si no es necesario
+            }
+            if (selectedValue !== 'min' && selectedValue !== 'range') {
+                minAgeInput.value = '';  // Limpiar "Desde" si no es necesario
+            }
+            if (selectedValue !== 'equals') {
+                personsAgeInput.value = ''; // Limpiar "Edad exacta" si no es necesario
+            }
         }
+
+        // Llamar a la función al cargar la página para asegurarse de que se actualicen los campos
+        window.onload = updateAgeFields;
     </script>
+
     
     <script>
         $(document).ready(function() {

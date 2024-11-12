@@ -86,14 +86,24 @@ class StatisticsView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        # Parámetros de solicitud
+        # Parámetros de solicitud (si existen)
         search = self.request.GET.get('search', '')  # Parámetro para indicar si se presionó "Buscar"
+        from_date = self.request.GET.get('from_date', '')
+        to_date = self.request.GET.get('to_date', '')
+        organism_id = self.request.GET.get('organism_id', '')
+        service_reason_id = self.request.GET.get('service_reason_id', '')
+        headquarter_id = self.request.GET.get('headquarter_id', '')
+        age = self.request.GET.get('age', '')
+        min_age = self.request.GET.get('min_age', '')
+        max_age = self.request.GET.get('max_age', '')
+        persons_age = self.request.GET.get('persons_age', '')
 
         # Inicializar variables de contexto
         attentions = Service.objects.none()
         total_records = 0
         show_results = False
 
+        # Asignar solo si se realiza la búsqueda
         if search:
             attentions = filter_attentions(self.request)
 
@@ -116,13 +126,31 @@ class StatisticsView(LoginRequiredMixin, TemplateView):
         reasons = Reason.objects.all()
         organisms = Organism.objects.all()
 
+        # Recuperar los objetos para los filtros seleccionados, si fueron enviados
+        selected_reason = Reason.objects.filter(service_reason_id=service_reason_id).first() if service_reason_id else None
+        selected_headquarter = Headquarter.objects.filter(headquarter_id=headquarter_id).first() if headquarter_id else None
+        selected_organism = Organism.objects.filter(organism_id=organism_id).first() if organism_id else None
+
+        # Añadir al contexto solo si los valores fueron enviados
         context.update({
             'attentions': attentions,
             'headquarters': headquarters,
             'organisms': organisms,
             'reasons': reasons,
             'total_records': total_records,
-            'show_results': show_results
+            'show_results': show_results,
+            'from_date': from_date if from_date else None,
+            'to_date': to_date if to_date else None,
+            'service_reason_id': service_reason_id if service_reason_id else None,
+            'headquarter_id': headquarter_id if headquarter_id else None,
+            'organism_id': organism_id if organism_id else None,
+            'selected_reason': selected_reason,
+            'selected_headquarter': selected_headquarter,
+            'selected_organism': selected_organism,
+            'age': age,
+            'min_age': min_age,
+            'max_age': max_age,
+            'persons_age': persons_age,
         })
 
         return context
